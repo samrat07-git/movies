@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Movie Gallery - No Slideshow</title>
+    <style>
+        :root {
+            --bg: #fff;
+            --text: #222;
+            --accent: #e50914;
+            --card-bg: #f5f5f5;
+            --card-shadow: rgba(0,0,0,0.08);
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            transition: background 0.3s, color 0.3s;
+        }
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card-bg);
+            padding: 12px 16px;
+            box-shadow: 0 1px 4px var(--card-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1001;
+        }
+        .logo {
+            font-weight: bold;
+            font-size: 1.5em;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: default;
+            animation: popUp 1.5s cubic-bezier(.23,1.12,.74,1.01) forwards;
+            transform-origin: bottom center;
+        }
+        @keyframes popUp {
+            0% { opacity: 0; transform: scale(0.7);}
+            60% { opacity: 1; transform: scale(1.2);}
+            100% { opacity: 1; transform: scale(1);}
+        }
+        .search-bar {
+            flex: 1;
+            max-width: 300px;
+            margin: 8px 16px;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 1em;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .theme-picker {
+            display: flex;
+            gap: 6px;
+        }
+        .theme-btn {
+            width: 24px;
+            height: 24px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            outline: 2px solid transparent;
+            transition: outline 0.2s;
+        }
+        .theme-btn.selected {
+            outline: 2px solid var(--accent);
+        }
+        .category-bar {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            background: var(--card-bg);
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 56px;
+            z-index: 1000;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .category-bar.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        .category-btn {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1em;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+        .category-btn.active, .category-btn:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+        .movies-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-top: 16px;
+            min-height: 500px;
+        }
+        .movie-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px var(--card-shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow 0.3s;
+        }
+        .movie-card:hover {
+            box-shadow: 0 6px 24px var(--card-shadow);
+        }
+        .movie-poster img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+        .movie-description {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .movie-description strong {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+        .season-link, .movie-description a {
+            display: block;
+            margin: 4px 0;
+            padding: 7px 10px;
+            background: #f8f9fa;
+            border-radius: 7px;
+            text-decoration: none;
+            color: var(--accent);
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+            font-size: 0.97em;
+            border: 1px solid #eee;
+        }
+        .season-link:hover, .movie-description a:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin: 30px 0 20px 0;
+        }
+        .pagination button {
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: none;
+            background: var(--accent);
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .pagination button[disabled] {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .pagination span {
+            font-size: 1.1em;
+            color: var(--text);
+        }
+        @media (max-width: 900px) {
+            .movies-container { grid-template-columns: repeat(2, 1fr);}
+        }
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 6px;
+            }
+            .movies-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                padding: 10px;
+            }
+            .movie-poster img { height: 140px;}
+            .category-bar { top: 96px;}
+        }
+        @media (max-width: 400px) {
+            .movies-container { grid-template-columns: 1fr;}
+        }
+        /* Themes */
+        .theme-light { --bg: #fff; --text: #222; --accent: #e50914; --card-bg: #f5f5f5; --card-shadow: rgba(0,0,0,0.08);}
+        .theme-dark { --bg: #181818; --text: #eee; --accent: #bb86fc; --card-bg: #232323; --card-shadow: rgba(0,0,0,0.3);}
+        .theme-neon { --bg: #0f0c29; --text: #fff; --accent: #39ff14; --card-bg: #1a1a2e; --card-shadow: 0 0 12px #39ff14, 0 2px 8px rgba(0,0,0,0.3);}
+        .theme-blue { --bg: #e3f2fd; --text: #0d47a1; --accent: #1565c0; --card-bg: #bbdefb; --card-shadow: rgba(33,150,243,0.12);}
+        .theme-rose { --bg: #fff0f3; --text: #ad1457; --accent: #e91e63; --card-bg: #fce4ec; --card-shadow: rgba(233,30,99,0.10);}
+    </style>
+</head>
+<body class="theme-light">
+    <div class="header">
+        <div class="logo" title="Movie Gallery">🎬 samrat's gallary</div>
+        <input id="searchBar" class="search-bar" type="text" placeholder="Search movies..." />
+        <div class="theme-picker" aria-label="Theme picker">
+            <button class="theme-btn selected" style="background:#fff; border:1px solid #ccc;" title="Light" data-theme="theme-light"></button>
+            <button class="theme-btn" style="background:#232323;" title="Dark" data-theme="theme-dark"></button>
+            <button class="theme-btn" style="background:linear-gradient(90deg,#39ff14 0%,#0f0c29 100%);" title="Neon" data-theme="theme-neon"></button>
+            <button class="theme-btn" style="background:#bbdefb;" title="Blue" data-theme="theme-blue"></button>
+            <button class="theme-btn" style="background:#fce4ec;" title="Rose" data-theme="theme-rose"></button>
+        </div>
+    </div>
+
+    <div class="category-bar" id="categoryBar"></div>
+    <div class="movies-container" id="moviesContainer"></div>
+    <div class="pagination" id="paginationBar"></div>
+
+    <script>
+        // =========================
+        // MOVIE DATA - ADD/EDIT HERE
+        // =========================
+        const movies = [
+            {
+                title: "Interstellar",
+                category: "Sci-Fi",
+                img: "https://mir-s3-cdn-cf.behance.net/project_modules/hd/8d8f28105415493.619ded067937d.jpg",
+                seasons: [{ label: "720p ^click", url: "https://mvlink.site/19104" }]
+            },
+            {
+                title: "Game of Thrones",
+                category: "Fantasy",
+                img: "https://wallpapercat.com/w/full/d/c/9/126712-1080x1920-iphone-1080p-game-of-thrones-background.jpg",
+                seasons: [{ label: "720p ^click", url: "https://mvlink.site/19104" }]
+            },
+            {
+                title: "The Expendables 3",
+                category: "Action",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/the-expendables-3-2014-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                seasons: [{ label: "720p ^click", url: "https://mvlink.site/13818" }]
+            },
+            {
+                title: "Inception (2010)",
+                category: "Sci-Fi",
+                img: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1582238792i/8565270.jpg",
+                seasons: [{ label: "Download", url: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1582238792i/8565270.jpg" }]
+            },
+            {
+                title: "Parasite (2019)",
+                category: "Thriller",
+                img: "https://static0.colliderimages.com/wordpress/wp-content/uploads/sharedimages/2025/06/01295258_poster_w780.jpg",
+                seasons: [{ label: "Download", url: "https://static0.colliderimages.com/wordpress/wp-content/uploads/sharedimages/2025/06/01295258_poster_w780.jpg" }]
+            },
+            {
+                title: "Descendants of the Sun",
+                category: "Drama",
+                img: "https://images.justwatch.com/poster/202546506/s718/descendants-of-the-sun.jpg",
+                seasons: [{ label: "Download", url: "https://images.justwatch.com/poster/202546506/s718/descendants-of-the-sun.jpg" }]
+            },
+            {
+                title: "Stranger Things",
+                category: "Sci-Fi",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/uOOtwVbSr4QDjAGIifLDwpb2Pdl-740x1110.jpg",
+                seasons: [
+                    { label: "SEASON 1", url: "https://mvlink.site/web/3023" },
+                    { label: "SEASON 2", url: "https://mvlink.site/web/3026" },
+                    { label: "SEASON 3", url: "https://mvlink.site/web/3249" },
+                    { label: "SEASON 4", url: "https://mvlink.site/web/11571" }
+                ]
+            },
+            {
+                title: "The Lord of the Rings",
+                category: "Fantasy",
+                img: "https://musicart.xboxlive.com/7/8a8d5100-0000-0000-0000-000000000002/504/image.jpg",
+                seasons: [{ label: "Download", url: "https://musicart.xboxlive.com/7/8a8d5100-0000-0000-0000-000000000002/504/image.jpg" }]
+            },
+            {
+                title: "Reacher",
+                category: "Action",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/oIAMQ42lzSd6ksvGe4WFMKqT0ja-740x1110.jpg",
+                seasons: [
+                    { label: "SEASON 1", url: "https://mvlink.site/web/8013" },
+                    { label: "SEASON 2", url: "https://mvlink.site/web/8159" },
+                    { label: "SEASON 3", url: "https://mvlink.site/web/11973" }
+                ]
+            },
+            {
+                title: "Adolescence",
+                category: "Drama",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/tDHWWReefmOOjBCJZUck8cNwssk-740x1109.jpg",
+                seasons: [{ label: "SEASON 1", url: "https://mvlink.site/web/11295" }]
+            },
+            {
+                title: "Attack on Titan",
+                category: "Anime",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/hqRb1wyIVsaMukZElPBUXoJPqrR-740x1110.jpg",
+                seasons: [
+                    { label: "season 1", url: "https://mvlink.site/web/10420" },
+                    { label: "season 2", url: "https://mvlink.site/web/10690" },
+                    { label: "season 3", url: "https://mvlink.site/web/10792" },
+                    { label: "season 4", url: "https://mvlink.site/11687" }
+                ]
+            },
+            {
+                title: "Avatar: The Way of Water",
+                category: "Adventure",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/avatar-the-way-of-water-2022-dual-audio-hindi-english-480p-720p-1080p-1-740x1110.jpg",
+                seasons: [{ label: "720p click", url: "https://mvlink.site/13635" }]
+            },
+            {
+                title: "Mission Impossible",
+                category: "Action",
+                img: "https://joshmovies.com/wp-content/uploads/2025/05/z53D72EAOxGRqdr7KXXWp9dJiDe-740x1110.jpg",
+                seasons: [{ label: "720p ^click", url: "https://mvlink.site/26632" }]
+            },
+            {
+                title: "Baki",
+                category: "Anime",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/2iafrubNKwB7iA7z8Y1TkHyOrsh-740x1110.jpg",
+                seasons: [{ label: "SEASON 1", url: "https://mvlink.site/web/11349" }]
+            },
+            {
+                title: "The Pit",
+                category: "Drama",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/6fMGktEDXMZZPACJ5cWkVQ6TSte-740x1110.jpg",
+                seasons: [{ label: "SEASON 1", url: "https://mvlink.site/web/11677" }]
+            },
+            {
+                title: "Area 51",
+                category: "Sci-Fi",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/area-51-2015-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                seasons: [{ label: "720p click", url: "https://mvlink.site/11687" }]
+            },
+            {
+                title: "Fight Club",
+                category: "Drama",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/fight-club-1999-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                seasons: [{ label: "720p click", url: "https://mvlink.site/11266" }]
+            },
+            {
+                title: "Doraemon Nobita",
+                category: "Anime",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/doraemon-nobita-s-chronicle-of-the-moon-exploration-2019-dual-audio-hindi-japanese-480p-720p-1080p-740x1047.jpg",
+                seasons: [{ label: "720p click", url: "https://mvlink.site/11525" }]
+            },
+            {
+                title: "In My Dreams",
+                category: "Drama",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/in-my-dreams-2014-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                seasons: [{ label: "720p click", url: "https://mvlink.site/11443" }]
+            },
+            {
+                title: "The Contractor",
+                category: "Action",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/the-contractor-2022-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                seasons: [{ label: "720p click", url: "https://mvlink.site/11166" }]
+            },
+            // Add more movies as needed...
+        ];
+
+        // Pagination settings
+        const MOVIES_PER_PAGE = 10;
+        let currentPage = 1;
+
+        // Generate unique categories
+        const categories = ["All", ...Array.from(new Set(movies.map(m => m.category)))];
+
+        // Elements
+        const categoryBar = document.getElementById("categoryBar");
+        const moviesContainer = document.getElementById("moviesContainer");
+        const paginationBar = document.getElementById("paginationBar");
+        const searchBar = document.getElementById("searchBar");
+
+        // Render category buttons
+        categories.forEach((cat) => {
+            const btn = document.createElement("button");
+            btn.className = "category-btn" + (cat === "All" ? " active" : "");
+            btn.textContent = cat;
+            btn.onclick = () => {
+                document.querySelectorAll(".category-btn").forEach((b) => b.classList.remove("active"));
+                btn.classList.add("active");
+                currentPage = 1;
+                renderMovies(cat, searchBar.value.trim());
+            };
+            categoryBar.appendChild(btn);
+        });
+
+        // Render movies with pagination, category, and search
+        function renderMovies(filterCat = "All", searchTerm = "") {
+            const filtered = movies.filter(
+                (m) =>
+                    (filterCat === "All" || m.category === filterCat) &&
+                    m.title.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            const startIdx = (currentPage - 1) * MOVIES_PER_PAGE;
+            const endIdx = startIdx + MOVIES_PER_PAGE;
+            const pageMovies = filtered.slice(startIdx, endIdx);
+
+            moviesContainer.innerHTML = "";
+            if (pageMovies.length === 0) {
+                moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;font-size:1.1em;">No movies found.</div>`;
+            }
+            pageMovies.forEach((movie) => {
+                const card = document.createElement("div");
+                card.className = "movie-card";
+                card.innerHTML = `
+                    <div class="movie-poster">
+                        <img src="${movie.img}" alt="${movie.title}" loading="lazy" />
+                    </div>
+                    <div class="movie-description">
+                        <strong>${movie.title}</strong>
+                        ${movie.seasons
+                            .map(
+                                (s) =>
+                                    `<a href="${s.url}" class="season-link" target="_blank" rel="noopener noreferrer">${s.label}</a>`
+                            )
+                            .join("")}
+                    </div>
+                `;
+                moviesContainer.appendChild(card);
+            });
+            renderPagination(filtered.length);
+        }
+
+        // Render pagination controls
+        function renderPagination(filteredLength) {
+            const pageCount = Math.ceil(filteredLength / MOVIES_PER_PAGE);
+            paginationBar.innerHTML = `
+                <button id="prevBtn" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
+                <span>Page ${currentPage} of ${pageCount}</span>
+                <button id="nextBtn" ${currentPage === pageCount ? "disabled" : ""}>Next</button>
+            `;
+            document.getElementById("prevBtn").onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    const activeCat = document.querySelector(".category-btn.active").textContent;
+                    renderMovies(activeCat, searchBar.value.trim());
+                }
+            };
+            document.getElementById("nextBtn").onclick = () => {
+                if (currentPage < pageCount) {
+                    currentPage++;
+                    const activeCat = document.querySelector(".category-btn.active").textContent;
+                    renderMovies(activeCat, searchBar.value.trim());
+                }
+            };
+        }
+
+        // Search input event
+        searchBar.addEventListener("input", () => {
+            currentPage = 1;
+            const activeCat = document.querySelector(".category-btn.active").textContent;
+            renderMovies(activeCat, searchBar.value.trim());
+        });
+
+        // Theme picker logic
+        const themeBtns = document.querySelectorAll(".theme-btn");
+        const themes = ["theme-light", "theme-dark", "theme-neon", "theme-blue", "theme-rose"];
+        let currentThemeIndex = 0;
+        themeBtns.forEach((btn, i) => {
+            btn.addEventListener("click", () => {
+                themeBtns.forEach((b) => b.classList.remove("selected"));
+                btn.classList.add("selected");
+                document.body.className = themes[i];
+                currentThemeIndex = i;
+                localStorage.setItem("movieTheme", themes[i]);
+            });
+        });
+        const savedTheme = localStorage.getItem("movieTheme");
+        if (savedTheme && themes.includes(savedTheme)) {
+            document.body.className = savedTheme;
+            currentThemeIndex = themes.indexOf(savedTheme);
+            themeBtns.forEach((btn, i) => btn.classList.toggle("selected", i === currentThemeIndex));
+        }
+        setInterval(() => {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            document.body.className = themes[currentThemeIndex];
+            themeBtns.forEach((btn, i) => btn.classList.toggle("selected", i === currentThemeIndex));
+            localStorage.setItem("movieTheme", themes[currentThemeIndex]);
+        }, 10000);
+
+        // Hide category bar on scroll down
+        let lastScrollTop = 0;
+        window.addEventListener("scroll", () => {
+            let st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop) {
+                categoryBar.classList.add("hidden");
+            } else {
+                categoryBar.classList.remove("hidden");
+            }
+            lastScrollTop = st <= 0 ? 0 : st;
+        });
+
+        // Initial render
+        renderMovies();
+    </script>
+</body>
+</html>
