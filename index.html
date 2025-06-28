@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Movie Gallery - No Slideshow</title>
+    <meta name="description" content="Explore Samart's Gallery, a collection of top famous movies with category filtering, search, and vibrant themes." />
+    <meta name="keywords" content="movies, movie gallery, films, watch movies, Samart's Gallery" />
+    <title>Samart's Gallery - Top Famous Movies</title>
     <style>
         :root {
             --bg: #fff;
             --text: #222;
             --accent: #e50914;
             --card-bg: #f5f5f5;
-            --card-shadow: rgba(0,0,0,0.08);
+            --card-shadow: rgba(0, 0, 0, 0.08);
         }
         body {
             background: var(--bg);
@@ -39,13 +41,13 @@
             align-items: center;
             gap: 8px;
             cursor: default;
-            animation: popUp 1.5s cubic-bezier(.23,1.12,.74,1.01) forwards;
+            animation: popUp 1.5s ease forwards;
             transform-origin: bottom center;
         }
         @keyframes popUp {
-            0% { opacity: 0; transform: scale(0.7);}
-            60% { opacity: 1; transform: scale(1.2);}
-            100% { opacity: 1; transform: scale(1);}
+            0% { opacity: 0; transform: scale(0.7); }
+            60% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
         }
         .search-bar {
             flex: 1;
@@ -57,10 +59,16 @@
             font-size: 1em;
             background: var(--bg);
             color: var(--text);
+            transition: border-color 0.2s;
+        }
+        .search-bar:focus {
+            border-color: var(--accent);
+            outline: none;
         }
         .theme-picker {
             display: flex;
             gap: 6px;
+            align-items: center;
         }
         .theme-btn {
             width: 24px;
@@ -69,10 +77,35 @@
             border-radius: 50%;
             cursor: pointer;
             outline: 2px solid transparent;
-            transition: outline 0.2s;
+            transition: outline 0.2s, transform 0.2s;
+        }
+        .theme-btn:hover {
+            transform: scale(1.1);
         }
         .theme-btn.selected {
-            outline: 2px solid var(--accent);
+            outline: 3px solid var(--accent);
+            transform: scale(1.2);
+        }
+        .theme-toggle {
+            padding: 6px 12px;
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            background: none;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        .theme-toggle:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+        .sort-select {
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1em;
         }
         .category-bar {
             display: flex;
@@ -85,6 +118,15 @@
             top: 56px;
             z-index: 1000;
             transition: transform 0.3s, opacity 0.3s;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--card-bg);
+        }
+        .category-bar::-webkit-scrollbar {
+            height: 6px;
+        }
+        .category-bar::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
         }
         .category-bar.hidden {
             transform: translateY(-100%);
@@ -98,12 +140,18 @@
             padding: 6px 14px;
             border-radius: 20px;
             cursor: pointer;
-            transition: background 0.2s, color 0.2s;
+            transition: background 0.2s, color 0.2s, transform 0.2s;
             white-space: nowrap;
         }
-        .category-btn.active, .category-btn:hover {
+        .category-btn:hover {
             background: var(--accent);
             color: #fff;
+            transform: translateY(-2px);
+        }
+        .category-btn.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 4px var(--card-shadow);
         }
         .movies-container {
             display: grid;
@@ -122,16 +170,25 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: box-shadow 0.3s;
+            transition: box-shadow 0.3s, transform 0.3s;
         }
         .movie-card:hover {
             box-shadow: 0 6px 24px var(--card-shadow);
+            transform: scale(1.05);
         }
         .movie-poster img {
             width: 100%;
             height: 320px;
             object-fit: cover;
             display: block;
+        }
+        .movie-poster img.error {
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9em;
         }
         .movie-description {
             padding: 16px;
@@ -144,7 +201,13 @@
             margin-bottom: 8px;
             color: var(--accent);
         }
-        .season-link, .movie-description a {
+        .movie-description p {
+            font-size: 0.9em;
+            color: var(--text);
+            margin: 0 0 8px;
+            line-height: 1.4;
+        }
+        .season-link {
             display: block;
             margin: 4px 0;
             padding: 7px 10px;
@@ -157,7 +220,7 @@
             font-size: 0.97em;
             border: 1px solid #eee;
         }
-        .season-link:hover, .movie-description a:hover {
+        .season-link:hover {
             background: var(--accent);
             color: #fff;
         }
@@ -172,12 +235,15 @@
             padding: 8px 18px;
             border-radius: 20px;
             border: none;
-            background: var(--accent);
+            background: linear-gradient(45deg, var(--accent), #ff6b6b);
             color: #fff;
             font-size: 1em;
             cursor: pointer;
             font-weight: 500;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .pagination button:hover {
+            transform: translateY(-2px);
         }
         .pagination button[disabled] {
             background: #ccc;
@@ -187,191 +253,556 @@
             font-size: 1.1em;
             color: var(--text);
         }
+        .loading {
+            text-align: center;
+            color: var(--text);
+            font-size: 1.1em;
+            padding: 20px;
+        }
+        .marquee {
+            white-space: nowrap;
+            overflow: hidden;
+            color: var(--text);
+            font-size: 0.9em;
+            padding: 10px;
+            background: var(--card-bg);
+            animation: scroll 20s linear infinite;
+        }
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text);
+            background: var(--card-bg);
+            border-top: 1px solid #eee;
+        }
         @media (max-width: 900px) {
-            .movies-container { grid-template-columns: repeat(2, 1fr);}
+            .movies-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         @media (max-width: 600px) {
             .header {
                 flex-direction: column;
                 align-items: stretch;
-                gap: 6px;
+                gap: 10px;
             }
             .movies-container {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
                 padding: 10px;
             }
-            .movie-poster img { height: 140px;}
-            .category-bar { top: 96px;}
+            .movie-poster img {
+                height: 200px;
+            }
+            .category-bar {
+                top: 96px;
+            }
         }
         @media (max-width: 400px) {
-            .movies-container { grid-template-columns: 1fr;}
+            .movies-container {
+                grid-template-columns: 1fr;
+            }
         }
         /* Themes */
-        .theme-light { --bg: #fff; --text: #222; --accent: #e50914; --card-bg: #f5f5f5; --card-shadow: rgba(0,0,0,0.08);}
-        .theme-dark { --bg: #181818; --text: #eee; --accent: #bb86fc; --card-bg: #232323; --card-shadow: rgba(0,0,0,0.3);}
-        .theme-neon { --bg: #0f0c29; --text: #fff; --accent: #39ff14; --card-bg: #1a1a2e; --card-shadow: 0 0 12px #39ff14, 0 2px 8px rgba(0,0,0,0.3);}
-        .theme-blue { --bg: #e3f2fd; --text: #0d47a1; --accent: #1565c0; --card-bg: #bbdefb; --card-shadow: rgba(33,150,243,0.12);}
-        .theme-rose { --bg: #fff0f3; --text: #ad1457; --accent: #e91e63; --card-bg: #fce4ec; --card-shadow: rgba(233,30,99,0.10);}
+        .theme-light {
+            --bg: #fff;
+            --text: #222;
+            --accent: #e50914;
+            --card-bg: #f5f5f5;
+            --card-shadow: rgba(0, 0, 0, 0.08);
+        }
+        .theme-dark {
+            --bg: #181818;
+            --text: #eee;
+            --accent: #bb86fc;
+            --card-bg: #232323;
+            --card-shadow: rgba(0, 0, 0, 0.3);
+        }
+        .theme-ne14px;
+            --bg: #0f0c29;
+            --text: #fff;
+            --accent: #39ff14;
+            --card-bg: #1a1a2e;
+            --card-shadow: 0 0 12px #39ff14, 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        .theme-blue {
+            --bg: #e3f2fd;
+            --text: #0d47a1;
+            --accent: #1565c0;
+            --card-bg: #bbdefb;
+            --card-shadow: rgba(33, 150, 243, 0.12);
+        }
+        .theme-rose {
+            --bg: #fff0f3;
+            --text: #ad1457;
+            --accent: #e91e63;
+            --card-bg: #fce4ec;
+            --card-shadow: rgba(233, 30, 99, 0.1);
+        }
+        .theme-rgb-lightning {
+            --bg: #000;
+            --text: #fff;
+            --accent: #ff0000;
+            --card-bg: #1a1a1a;
+            --card-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            animation: rgbGlow 3s infinite;
+        }
+        @keyframes rgbGlow {
+            0% { --accent: #ff0000; --card-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
+            33% { --accent: #00ff00; --card-shadow: 0 0 10px rgba(0, 255, 0, 0.5); }
+            66% { --accent: #0000ff; --card-shadow: 0 0 10px rgba(0, 0, 255, 0.5); }
+            100% { --accent: #ff0000; --card-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
+        }
     </style>
 </head>
 <body class="theme-light">
-    <div class="header">
-        <div class="logo" title="Movie Gallery">🎬 samrat's gallary</div>
-        <input id="searchBar" class="search-bar" type="text" placeholder="Search movies..." />
+    <header class="header">
+        <div class="logo" title="Samart's Gallery">🎬 Samart's Gallery</div>
+        <input id="searchBar" class="search-bar" type="text" placeholder="Search movies..." aria-label="Search movies" />
         <div class="theme-picker" aria-label="Theme picker">
-            <button class="theme-btn selected" style="background:#fff; border:1px solid #ccc;" title="Light" data-theme="theme-light"></button>
-            <button class="theme-btn" style="background:#232323;" title="Dark" data-theme="theme-dark"></button>
-            <button class="theme-btn" style="background:linear-gradient(90deg,#39ff14 0%,#0f0c29 100%);" title="Neon" data-theme="theme-neon"></button>
-            <button class="theme-btn" style="background:#bbdefb;" title="Blue" data-theme="theme-blue"></button>
-            <button class="theme-btn" style="background:#fce4ec;" title="Rose" data-theme="theme-rose"></button>
+            <button class="theme-btn selected" style="background: #fff; border: 1px solid #ccc" title="Light" data-theme="theme-light" aria-label="Light theme"></button>
+            <button class="theme-btn" style="background: #232323" title="Dark" data-theme="theme-dark" aria-label="Dark theme"></button>
+            <button class="theme-btn" style="background: linear-gradient(90deg, #39ff14 0%, #0f0c29 100%)" title="Neon" data-theme="theme-neon" aria-label="Neon theme"></button>
+            <button class="theme-btn" style="background: #bbdefb" title="Blue" data-theme="theme-blue" aria-label="Blue theme"></button>
+            <button class="theme-btn" style="background: #fce4ec" title="Rose" data-theme="theme-rose" aria-label="Rose theme"></button>
+            <button class="theme-btn" style="background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff)" title="RGB Lightning" data-theme="theme-rgb-lightning" aria-label="RGB Lightning theme"></button>
+            <button class="theme-toggle" id="themeToggle">Toggle Auto Theme</button>
         </div>
-    </div>
-
-    <div class="category-bar" id="categoryBar"></div>
-    <div class="movies-container" id="moviesContainer"></div>
+        <select id="sortSelect" aria-label="Sort movies">
+            <option value="title">Sort by Title</option>
+            <option value="category">Sort by Category</option>
+        </select>
+    </header>
+    <nav class="category-bar" id="categoryBar"></nav>
+    <main class="movies-container" id="moviesContainer"></main>
     <div class="pagination" id="paginationBar"></div>
+    <div class="loading" id="loading" style="display: none;">Loading...</div>
+    <div class="marquee">00101010101001100101101110101001010110101010100101010101001010111001010101010010101010101010101010101011101000101011110101001011</div>
+    <footer>© 2025 Samart's Gallery. All rights reserved.</footer>
 
     <script>
-        // =========================
-        // MOVIE DATA - ADD/EDIT HERE
-        // =========================
+        // Simulated movies.json data (can be moved to a separate file)
         const movies = [
             {
                 title: "Interstellar",
                 category: "Sci-Fi",
-                img: "https://mir-s3-cdn-cf.behance.net/project_modules/hd/8d8f28105415493.619ded067937d.jpg",
-                seasons: [{ label: "720p ^click", url: "https://mvlink.site/19104" }]
+                img: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+                year: 2014,
+                synopsis: "A team of explorers travel through a wormhole in space to ensure humanity's survival.",
+                seasons: [{ label: "720p ^click", url: "https://mvlink.site/19104" }],
             },
             {
                 title: "Game of Thrones",
                 category: "Fantasy",
-                img: "https://wallpapercat.com/w/full/d/c/9/126712-1080x1920-iphone-1080p-game-of-thrones-background.jpg",
-                seasons: [{ label: "720p ^click", url: "https://mvlink.site/19104" }]
+                img: "https://image.tmdb.org/t/p/w500/7WUHnWGx5nJ5HuXrZ5tYwH6E3PA.jpg",
+                year: 2011,
+                synopsis: "Nine noble families fight for control over the lands of Westeros.",
+                seasons: [{ label: "720p ^click", url: "https://mvlink.site/19104" }],
             },
             {
                 title: "The Expendables 3",
                 category: "Action",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/the-expendables-3-2014-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                seasons: [{ label: "720p ^click", url: "https://mvlink.site/13818" }]
+                img: "https://image.tmdb.org/t/p/w500/3W3v9F6HxsZQbFiD2s4KxppI3qU.jpg",
+                year: 2014,
+                synopsis: "Barney augments his team with new blood for a personal battle.",
+                seasons: [{ label: "720p ^click", url: "https://mvlink.site/13818" }],
             },
             {
-                title: "Inception (2010)",
-                category: "Sci-Fi",
-                img: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1582238792i/8565270.jpg",
-                seasons: [{ label: "Download", url: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1582238792i/8565270.jpg" }]
-            },
-            {
-                title: "Parasite (2019)",
-                category: "Thriller",
-                img: "https://static0.colliderimages.com/wordpress/wp-content/uploads/sharedimages/2025/06/01295258_poster_w780.jpg",
-                seasons: [{ label: "Download", url: "https://static0.colliderimages.com/wordpress/wp-content/uploads/sharedimages/2025/06/01295258_poster_w780.jpg" }]
-            },
-            {
-                title: "Descendants of the Sun",
+                title: "The Shawshank Redemption",
                 category: "Drama",
-                img: "https://images.justwatch.com/poster/202546506/s718/descendants-of-the-sun.jpg",
-                seasons: [{ label: "Download", url: "https://images.justwatch.com/poster/202546506/s718/descendants-of-the-sun.jpg" }]
+                img: "https://image.tmdb.org/t/p/w500/9O7gLzmreU0nGkIB6K3BsJbzvNv.jpg",
+                year: 1994,
+                synopsis: "Two imprisoned men bond over several years, finding solace and eventual redemption.",
+                seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "Stranger Things",
-                category: "Sci-Fi",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/uOOtwVbSr4QDjAGIifLDwpb2Pdl-740x1110.jpg",
-                seasons: [
-                    { label: "SEASON 1", url: "https://mvlink.site/web/3023" },
-                    { label: "SEASON 2", url: "https://mvlink.site/web/3026" },
-                    { label: "SEASON 3", url: "https://mvlink.site/web/3249" },
-                    { label: "SEASON 4", url: "https://mvlink.site/web/11571" }
-                ]
+                title: "The Godfather",
+                category: "Crime",
+                img: "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+                year: 1972,
+                synopsis: "The aging patriarch of an organized crime dynasty transfers control to his son.",
+                seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "The Lord of the Rings",
-                category: "Fantasy",
-                img: "https://musicart.xboxlive.com/7/8a8d5100-0000-0000-0000-000000000002/504/image.jpg",
-                seasons: [{ label: "Download", url: "https://musicart.xboxlive.com/7/8a8d5100-0000-0000-0000-000000000002/504/image.jpg" }]
-            },
-            {
-                title: "Reacher",
+                title: "The Dark Knight",
                 category: "Action",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/oIAMQ42lzSd6ksvGe4WFMKqT0ja-740x1110.jpg",
-                seasons: [
-                    { label: "SEASON 1", url: "https://mvlink.site/web/8013" },
-                    { label: "SEASON 2", url: "https://mvlink.site/web/8159" },
-                    { label: "SEASON 3", url: "https://mvlink.site/web/11973" }
-                ]
+                img: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+                year: 2008,
+                synopsis: "Batman faces the Joker, a criminal mastermind wreaking havoc in Gotham.",
+                seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "Adolescence",
+                title: "Pulp Fiction",
+                category: "Crime",
+                img: "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8io7PM.jpg",
+                year: 1994,
+                synopsis: "The lives of two mob hitmen, a boxer, and others intertwine in a tale of violence.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Forrest Gump",
                 category: "Drama",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/tDHWWReefmOOjBCJZUck8cNwssk-740x1109.jpg",
-                seasons: [{ label: "SEASON 1", url: "https://mvlink.site/web/11295" }]
-            },
-            {
-                title: "Attack on Titan",
-                category: "Anime",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/hqRb1wyIVsaMukZElPBUXoJPqrR-740x1110.jpg",
-                seasons: [
-                    { label: "season 1", url: "https://mvlink.site/web/10420" },
-                    { label: "season 2", url: "https://mvlink.site/web/10690" },
-                    { label: "season 3", url: "https://mvlink.site/web/10792" },
-                    { label: "season 4", url: "https://mvlink.site/11687" }
-                ]
-            },
-            {
-                title: "Avatar: The Way of Water",
-                category: "Adventure",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/avatar-the-way-of-water-2022-dual-audio-hindi-english-480p-720p-1080p-1-740x1110.jpg",
-                seasons: [{ label: "720p click", url: "https://mvlink.site/13635" }]
-            },
-            {
-                title: "Mission Impossible",
-                category: "Action",
-                img: "https://joshmovies.com/wp-content/uploads/2025/05/z53D72EAOxGRqdr7KXXWp9dJiDe-740x1110.jpg",
-                seasons: [{ label: "720p ^click", url: "https://mvlink.site/26632" }]
-            },
-            {
-                title: "Baki",
-                category: "Anime",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/2iafrubNKwB7iA7z8Y1TkHyOrsh-740x1110.jpg",
-                seasons: [{ label: "SEASON 1", url: "https://mvlink.site/web/11349" }]
-            },
-            {
-                title: "The Pit",
-                category: "Drama",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/6fMGktEDXMZZPACJ5cWkVQ6TSte-740x1110.jpg",
-                seasons: [{ label: "SEASON 1", url: "https://mvlink.site/web/11677" }]
-            },
-            {
-                title: "Area 51",
-                category: "Sci-Fi",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/area-51-2015-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                seasons: [{ label: "720p click", url: "https://mvlink.site/11687" }]
+                img: "https://image.tmdb.org/t/p/w500/saHP97rE1blB3X1oU3yVhm2Ang.jpg",
+                year: 1994,
+                synopsis: "The life story of a man with a low IQ who achieves great things.",
+                seasons: [{ label: "Watch", url: "#" }],
             },
             {
                 title: "Fight Club",
                 category: "Drama",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/fight-club-1999-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                seasons: [{ label: "720p click", url: "https://mvlink.site/11266" }]
+                img: "https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3BmJK.jpg",
+                year: 1999,
+                synopsis: "An insomniac and a soap salesman form an underground fight club.",
+                seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "Doraemon Nobita",
-                category: "Anime",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/doraemon-nobita-s-chronicle-of-the-moon-exploration-2019-dual-audio-hindi-japanese-480p-720p-1080p-740x1047.jpg",
-                seasons: [{ label: "720p click", url: "https://mvlink.site/11525" }]
+                title: "Inception",
+                category: "Sci-Fi",
+                img: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+                year: 2010,
+                synopsis: "A thief with the ability to enter dreams is given a final job.",
+                seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "In My Dreams",
+                title: "The Matrix",
+                category: "Sci-Fi",
+                img: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5.jpg",
+                year: 1999,
+                synopsis: "A hacker discovers a mysterious truth about his reality.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Goodfellas",
+                category: "Crime",
+                img: "https://image.tmdb.org/t/p/w500/aKuFiU82s5ISJpGZp7YkTIBVqY.jpg",
+                year: 1990,
+                synopsis: "The story of a young man who rises in a mob organization.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "The Lord of the Rings: The Return of the King",
+                category: "Fantasy",
+                img: "https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg",
+                year: 2003,
+                synopsis: "Gandalf and Aragorn lead the World of Men against Sauron's army.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Star Wars: Episode V - The Empire Strikes Back",
+                category: "Sci-Fi",
+                img: "https://image.tmdb.org/t/p/w500/6u1fYtxG5eqjhtCPDx04pJphGDW.jpg",
+                year: 1980,
+                synopsis: "The rebels face attacks from the Empire as Luke trains with Yoda.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "The Silence of the Lambs",
+                category: "Thriller",
+                img: "https://image.tmdb.org/t/p/w500/rplLJ2hPcOQmkFhTqUce0pGWO1.jpg",
+                year: 1991,
+                synopsis: "An FBI agent seeks help from a cannibalistic serial killer to catch another.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Saving Private Ryan",
+                category: "War",
+                img: "https://image.tmdb.org/t/p/w500/1wY4psJ5MJKhiL3yC2xAiHj5f6W.jpg",
+                year: 1998,
+                synopsis: "A group of soldiers go behind enemy lines to rescue a paratrooper.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Schindler's List",
                 category: "Drama",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/in-my-dreams-2014-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                seasons: [{ label: "720p click", url: "https://mvlink.site/11443" }]
+                img: "https://image.tmdb.org/t/p/w500/sF1U4EUQS8YHUYjNl3pMGNIQyw.jpg",
+                year: 1993,
+                synopsis: "A businessman saves thousands of Jews during the Holocaust.",
+                seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "The Contractor",
+                title: "Avengers: Endgame",
                 category: "Action",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/the-contractor-2022-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                seasons: [{ label: "720p click", url: "https://mvlink.site/11166" }]
+                img: "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg",
+                year: 2019,
+                synopsis: "The Avengers assemble to undo Thanos' actions and restore order.",
+                seasons: [
+                    { label: "Watch", url: "#" },
+                    { label: "Bonus Features", url: "#" },
+                    { label: "Gag Reel", url: "#" },
+                ],
             },
-            // Add more movies as needed...
+            {
+                title: "Gladiator",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/ty8TGR7vMDP1KceX0uH6e6gYxY.jpg",
+                year: 2000,
+                synopsis: "A betrayed Roman general seeks revenge against a corrupt emperor.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Jurassic Park",
+                category: "Adventure",
+                img: "https://image.tmdb.org/t/p/w500/oU7zEHnzl2yruwE3oCU0PE6L8BS.jpg",
+                year: 1993,
+                synopsis: "A theme park's cloned dinosaurs break free, causing chaos.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Titanic",
+                category: "Romance",
+                img: "https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOY.jpg",
+                year: 1997,
+                synopsis: "A love story unfolds aboard the ill-fated RMS Titanic.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "The Lion King",
+                category: "Animation",
+                img: "https://image.tmdb.org/t/p/w500/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg",
+                year: 1994,
+                synopsis: "A young lion prince must reclaim his throne after tragedy.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Toy Story",
+                category: "Animation",
+                img: "https://image.tmdb.org/t/p/w500/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
+                year: 1995,
+                synopsis: "A cowboy doll is threatened by a new spaceman toy.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Finding Nemo",
+                category: "Animation",
+                img: "https://image.tmdb.org/t/p/w500/ggQ6o8X5984OrrXg3ZADJNx07.jpg",
+                year: 2003,
+                synopsis: "A clownfish searches for his missing son in the ocean.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "The Avengers",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg",
+                year: 2012,
+                synopsis: "Earth's mightiest heroes team up to stop an alien invasion.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Black Panther",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/uxzzxoxB6K6y8S9zM3A5PCzmth.jpg",
+                year: 2018,
+                synopsis: "T'Challa returns to Wakanda to take his place as king.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Deadpool",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/yGSxJiK0A66Gu2nKryC3fV4Z4a.jpg",
+                year: 2016,
+                synopsis: "A wisecracking mercenary seeks revenge with newfound abilities.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Joker",
+                category: "Drama",
+                img: "https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
+                year: 2019,
+                synopsis: "A failed comedian descends into madness in Gotham City.",
+                seasons: [
+                    { label: "Watch", url: "#" },
+                    { label: "Director's Cut", url: "#" },
+                    { label: "Making Of Documentary", url: "#" },
+                ],
+            },
+            {
+                title: "Wonder Woman",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/imekS7f1OuHyUP2LAiTEM0zBzUz.jpg",
+                year: 2017,
+                synopsis: "An Amazon princess leaves her island to end a world war.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Spider-Man: Into the Spider-Verse",
+                category: "Animation",
+                img: "https://image.tmdb.org/t/p/w500/iiZZdoQBEYBv6id8su7ImL0oCb.jpg",
+                year: 2018,
+                synopsis: "A teen becomes Spider-Man in a multiverse adventure.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "The Incredibles",
+                category: "Animation",
+                img: "https://image.tmdb.org/t/p/w500/2LqaL4U1Dsqw2vUjQ9XgF6L6g.jpg",
+                year: 2004,
+                synopsis: "A family of superheroes saves the world from a villain.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Coco",
+                category: "Animation",
+                img: "https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiWPCn5S0BbGVc.jpg",
+                year: 2017,
+                synopsis: "A boy journeys to the Land of the Dead to uncover his heritage.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Up",
+                category: "Animation",
+                img: "https://image.tmdb.org/t/p/w500/vpbaStTMt8qqXaEgnRJoZGzb79.jpg",
+                year: 2009,
+                synopsis: "An elderly man flies his house to South America with balloons.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Inside Out",
+                category: "Animation",
+                img: "https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4Tl5.jpg",
+                year: 2015,
+                synopsis: "Emotions guide a young girl through a life-changing move.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Shrek",
+                category: "Animation",
+                img: "https://image.tmdb.org/t/p/w500/iHOYcT0jCyd5vIABUMgM1E4x1I.jpg",
+                year: 2001,
+                synopsis: "An ogre rescues a princess to reclaim his swamp.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Frozen",
+                category: "Animation",
+                img: "https://image.tmdb.org/t/p/w500/kgwjIbP8frx2mvTIFo9hQHD5pW.jpg",
+                year: 2013,
+                synopsis: "A princess sets off to save her kingdom from eternal winter.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Harry Potter and the Sorcerer's Stone",
+                category: "Fantasy",
+                img: "https://image.tmdb.org/t/p/w500/wuMc08IPKEatf9rnMNXvW.jpg",
+                year: 2001,
+                synopsis: "A young boy discovers he's a wizard and attends Hogwarts.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Harry Potter and the Deathly Hallows: Part 2",
+                category: "Fantasy",
+                img: "https://image.tmdb.org/t/p/w500/c54HPq6YKnI0kTXIHkwD2RWtsg.jpg",
+                year: 2011,
+                synopsis: "Harry faces Voldemort in the final battle for Hogwarts.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Pirates of the Caribbean: The Curse of the Black Pearl",
+                category: "Adventure",
+                img: "https://image.tmdb.org/t/p/w500/z8onk7LV9Mmw6zKz4hT6pzzvmA.jpg",
+                year: 2003,
+                synopsis: "A pirate and a blacksmith rescue a kidnapped governor's daughter.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Guardians of the Galaxy",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/r7vmZjiyZw9rpJMQJdXpjgiCOk.jpg",
+                year: 2014,
+                synopsis: "A group of misfits save the galaxy from a powerful fanatic.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Iron Man",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/78lPtwv72eTNqFW9COo6Gf4xYsj.jpg",
+                year: 2008,
+                synopsis: "A billionaire builds a high-tech suit to fight evil.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Thor",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/prSfAi1zfWkPr1oyIFvQWrBDBm.jpg",
+                year: 2011,
+                synopsis: "The Norse god Thor is banished to Earth to learn humility.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Captain America: The First Avenger",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/vSNxAJpE9z1rV5S5e8xiyW4JPUD.jpg",
+                year: 2011,
+                synopsis: "A frail man becomes a super-soldier during World War II.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Doctor Strange",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/uGBVj3bEbCoZbDjjl9wTxcygko.jpg",
+                year: 2016,
+                synopsis: "A surgeon becomes a powerful sorcerer to protect reality.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Black Widow",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/qAZ0pZAwS2AvtMk1n2b0d2O5ld.jpg",
+                year: 2021,
+                synopsis: "Natasha Romanoff confronts her past as a spy.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Ant-Man",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/rS97hUJ1otKTTripPmlmU9M3wU.jpg",
+                year: 2015,
+                synopsis: "A thief uses a shrinking suit to pull off a heist.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Guardians of the Galaxy Vol. 2",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/y4MBh0EjBlMuOzv9axM4qJlmhzz.jpg",
+                year: 2017,
+                synopsis: "The Guardians unravel the mystery of Star-Lord's parentage.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Captain Marvel",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/AtsgWhDnHTq68L0lLsUrCnM7Tj.jpg",
+                year: 2019,
+                synopsis: "A warrior discovers her true powers during an intergalactic conflict.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Avengers: Infinity War",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/7WsyCh68F0KTbLSDK0fP1ta5I.jpg",
+                year: 2018,
+                synopsis: "The Avengers fight to stop Thanos from collecting the Infinity Stones.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Spider-Man: Homecoming",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/c24sv2weTHPsmDa7jEMN0m2P3RT.jpg",
+                year: 2017,
+                synopsis: "Peter Parker balances high school and being Spider-Man.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Spider-Man: Far From Home",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/4q2NNj4S5dGSe7daD2icqTlnV.jpg",
+                year: 2019,
+                synopsis: "Spider-Man faces new threats while on a school trip in Europe.",
+                seasons: [{ label: "Watch", url: "#" }],
+            }
         ];
 
         // Pagination settings
@@ -386,14 +817,18 @@
         const moviesContainer = document.getElementById("moviesContainer");
         const paginationBar = document.getElementById("paginationBar");
         const searchBar = document.getElementById("searchBar");
+        const sortSelect = document.getElementById("sortSelect");
+        const themeToggle = document.getElementById("themeToggle");
+        const loading = document.getElementById("loading");
 
         // Render category buttons
-        categories.forEach((cat) => {
+        categories.forEach(cat => {
             const btn = document.createElement("button");
             btn.className = "category-btn" + (cat === "All" ? " active" : "");
             btn.textContent = cat;
+            btn.setAttribute("aria-label", `Filter by ${cat} category`);
             btn.onclick = () => {
-                document.querySelectorAll(".category-btn").forEach((b) => b.classList.remove("active"));
+                document.querySelectorAll(".category-btn").forEach(b => b.classList.remove("active"));
                 btn.classList.add("active");
                 currentPage = 1;
                 renderMovies(cat, searchBar.value.trim());
@@ -403,39 +838,44 @@
 
         // Render movies with pagination, category, and search
         function renderMovies(filterCat = "All", searchTerm = "") {
-            const filtered = movies.filter(
-                (m) =>
-                    (filterCat === "All" || m.category === filterCat) &&
-                    m.title.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            const startIdx = (currentPage - 1) * MOVIES_PER_PAGE;
-            const endIdx = startIdx + MOVIES_PER_PAGE;
-            const pageMovies = filtered.slice(startIdx, endIdx);
+            loading.style.display = "block";
+            setTimeout(() => {
+                const filtered = movies.filter(
+                    m =>
+                        (filterCat === "All" || m.category === filterCat) &&
+                        m.title.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+                const startIdx = (currentPage - 1) * MOVIES_PER_PAGE;
+                const endIdx = startIdx + MOVIES_PER_PAGE;
+                const pageMovies = filtered.slice(startIdx, endIdx);
 
-            moviesContainer.innerHTML = "";
-            if (pageMovies.length === 0) {
-                moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;font-size:1.1em;">No movies found.</div>`;
-            }
-            pageMovies.forEach((movie) => {
-                const card = document.createElement("div");
-                card.className = "movie-card";
-                card.innerHTML = `
-                    <div class="movie-poster">
-                        <img src="${movie.img}" alt="${movie.title}" loading="lazy" />
-                    </div>
-                    <div class="movie-description">
-                        <strong>${movie.title}</strong>
-                        ${movie.seasons
-                            .map(
-                                (s) =>
-                                    `<a href="${s.url}" class="season-link" target="_blank" rel="noopener noreferrer">${s.label}</a>`
-                            )
-                            .join("")}
-                    </div>
-                `;
-                moviesContainer.appendChild(card);
-            });
-            renderPagination(filtered.length);
+                moviesContainer.innerHTML = "";
+                if (pageMovies.length === 0) {
+                    moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;font-size:1.1em;">No movies found.</div>`;
+                }
+                pageMovies.forEach(movie => {
+                    const card = document.createElement("div");
+                    card.className = "movie-card";
+                    card.innerHTML = `
+                        <div class="movie-poster">
+                            <img src="${movie.img}" alt="${movie.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Image+Not+Found'; this.classList.add('error')" />
+                        </div>
+                        <div class="movie-description">
+                            <strong>${movie.title} (${movie.year})</strong>
+                            <p>${movie.synopsis}</p>
+                            ${movie.seasons
+                                .map(
+                                    s =>
+                                        `<a href="${s.url}" class="season-link" target="_blank" rel="noopener noreferrer">${s.label}</a>`
+                                )
+                                .join("")}
+                        </div>
+                    `;
+                    moviesContainer.appendChild(card);
+                });
+                renderPagination(filtered.length);
+                loading.style.display = "none";
+            }, 100);
         }
 
         // Render pagination controls
@@ -462,8 +902,21 @@
             };
         }
 
-        // Search input event
+        // Debounced search input
+        let debounceTimeout;
         searchBar.addEventListener("input", () => {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => {
+                currentPage = 1;
+                const activeCat = document.querySelector(".category-btn.active").textContent;
+                renderMovies(activeCat, searchBar.value.trim());
+            }, 300);
+        });
+
+        // Sort movies
+        sortSelect.addEventListener("change", e => {
+            const sortBy = e.target.value;
+            movies.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
             currentPage = 1;
             const activeCat = document.querySelector(".category-btn.active").textContent;
             renderMovies(activeCat, searchBar.value.trim());
@@ -471,29 +924,49 @@
 
         // Theme picker logic
         const themeBtns = document.querySelectorAll(".theme-btn");
-        const themes = ["theme-light", "theme-dark", "theme-neon", "theme-blue", "theme-rose"];
+        const themes = [
+            "theme-light",
+            "theme-dark",
+            "theme-neon",
+            "theme-blue",
+            "theme-rose",
+            "theme-rgb-lightning",
+        ];
         let currentThemeIndex = 0;
+        let autoSwitch = localStorage.getItem("autoSwitchTheme") !== "false";
+        themeToggle.textContent = autoSwitch ? "Disable Auto Theme" : "Enable Auto Theme";
+
         themeBtns.forEach((btn, i) => {
             btn.addEventListener("click", () => {
-                themeBtns.forEach((b) => b.classList.remove("selected"));
+                themeBtns.forEach(b => b.classList.remove("selected"));
                 btn.classList.add("selected");
                 document.body.className = themes[i];
                 currentThemeIndex = i;
                 localStorage.setItem("movieTheme", themes[i]);
             });
         });
+
+        themeToggle.addEventListener("click", () => {
+            autoSwitch = !autoSwitch;
+            localStorage.setItem("autoSwitchTheme", autoSwitch);
+            themeToggle.textContent = autoSwitch ? "Disable Auto Theme" : "Enable Auto Theme";
+        });
+
+        if (autoSwitch) {
+            setInterval(() => {
+                currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+                document.body.className = themes[currentThemeIndex];
+                themeBtns.forEach((btn, i) => btn.classList.toggle("selected", i === currentThemeIndex));
+                localStorage.setItem("movieTheme", themes[currentThemeIndex]);
+            }, 10000);
+        }
+
         const savedTheme = localStorage.getItem("movieTheme");
         if (savedTheme && themes.includes(savedTheme)) {
             document.body.className = savedTheme;
             currentThemeIndex = themes.indexOf(savedTheme);
             themeBtns.forEach((btn, i) => btn.classList.toggle("selected", i === currentThemeIndex));
         }
-        setInterval(() => {
-            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-            document.body.className = themes[currentThemeIndex];
-            themeBtns.forEach((btn, i) => btn.classList.toggle("selected", i === currentThemeIndex));
-            localStorage.setItem("movieTheme", themes[currentThemeIndex]);
-        }, 10000);
 
         // Hide category bar on scroll down
         let lastScrollTop = 0;
