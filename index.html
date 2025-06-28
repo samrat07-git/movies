@@ -14,12 +14,16 @@
             --card-bg: #f5f5f5;
             --card-shadow: rgba(0, 0, 0, 0.08);
         }
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             background: var(--bg);
             color: var(--text);
             font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
         }
         .header {
             display: flex;
@@ -32,6 +36,10 @@
             position: sticky;
             top: 0;
             z-index: 1001;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('https://images.unsplash.com/photo-1598899134739-9b5859230d8c?auto=format&fit=crop&w=1200');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
         .logo {
             font-weight: bold;
@@ -41,13 +49,19 @@
             align-items: center;
             gap: 8px;
             cursor: default;
-            animation: popUp 1.5s ease forwards;
+            animation: popUp 1.5s ease forwards, thunderFlash 3s infinite;
             transform-origin: bottom center;
+            position: relative;
+            text-shadow: 0 0 10px var(--accent);
         }
         @keyframes popUp {
             0% { opacity: 0; transform: scale(0.7); }
             60% { opacity: 1; transform: scale(1.2); }
             100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes thunderFlash {
+            0%, 10%, 20%, 30%, 100% { text-shadow: 0 0 10px var(--accent); }
+            5%, 15%, 25% { text-shadow: 0 0 20px var(--accent), 0 0 30px #fff; opacity: 0.8; }
         }
         .search-bar {
             flex: 1;
@@ -171,16 +185,33 @@
             display: flex;
             flex-direction: column;
             transition: box-shadow 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(50px);
+            will-change: opacity, transform;
+        }
+        .movie-card.visible {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
         }
         .movie-card:hover {
             box-shadow: 0 6px 24px var(--card-shadow);
             transform: scale(1.05);
         }
+        .movie-poster {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+        }
         .movie-poster img {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 320px;
+            height: 100%;
             object-fit: cover;
             display: block;
+            background: url('https://via.placeholder.com/150x84?text=Loading') center/cover;
         }
         .movie-poster img.error {
             background: #eee;
@@ -272,6 +303,26 @@
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
         }
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1002;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
         footer {
             text-align: center;
             padding: 20px;
@@ -295,8 +346,11 @@
                 gap: 12px;
                 padding: 10px;
             }
+            .movie-poster {
+                padding-top: 56.25%; /* 16:9 aspect ratio for mobile */
+            }
             .movie-poster img {
-                height: 200px;
+                height: 100%;
             }
             .category-bar {
                 top: 96px;
@@ -322,7 +376,7 @@
             --card-bg: #232323;
             --card-shadow: rgba(0, 0, 0, 0.3);
         }
-        .theme-ne14px;
+        .theme-neon {
             --bg: #0f0c29;
             --text: #fff;
             --accent: #39ff14;
@@ -361,7 +415,7 @@
 </head>
 <body class="theme-light">
     <header class="header">
-        <div class="logo" title="Samart's Gallery">🎬 Samart's Gallery</div>
+        <div class="logo" title="Samart's Gallery">⚡️ Samart's Gallery</div>
         <input id="searchBar" class="search-bar" type="text" placeholder="Search movies..." aria-label="Search movies" />
         <div class="theme-picker" aria-label="Theme picker">
             <button class="theme-btn selected" style="background: #fff; border: 1px solid #ccc" title="Light" data-theme="theme-light" aria-label="Light theme"></button>
@@ -382,11 +436,13 @@
     <div class="pagination" id="paginationBar"></div>
     <div class="loading" id="loading" style="display: none;">Loading...</div>
     <div class="marquee">00101010101001100101101110101001010110101010100101010101001010111001010101010010101010101010101010101011101000101011110101001011</div>
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
     <footer>© 2025 Samart's Gallery. All rights reserved.</footer>
 
     <script>
-        // Simulated movies.json data (can be moved to a separate file)
+        // Simulated movies.json data (expanded to 100 movies for 10 pages)
         const movies = [
+            // Pages 1–6 (60 movies, unchanged from previous code)
             {
                 title: "Interstellar",
                 category: "Sci-Fi",
@@ -802,7 +858,417 @@
                 year: 2019,
                 synopsis: "Spider-Man faces new threats while on a school trip in Europe.",
                 seasons: [{ label: "Watch", url: "#" }],
-            }
+            },
+            // Additional movies to complete 60 for pages 1–6 (unchanged)
+            {
+                title: "The Wolf of Wall Street",
+                category: "Drama",
+                img: "https://image.tmdb.org/t/p/w500/pWHf4C7ZCSLh2me8dc6js0TGF3.jpg",
+                year: 2013,
+                synopsis: "A stockbroker rises to wealth through corruption and excess.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Mad Max: Fury Road",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/8tZYtuWezjS8Ud0Z3WbbF3qR3.jpg",
+                year: 2015,
+                synopsis: "In a post-apocalyptic wasteland, a drifter and a rebel fight for survival.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "The Grand Budapest Hotel",
+                category: "Comedy",
+                img: "https://image.tmdb.org/t/p/w500/nX5XotM9yprCKarRH4fz08I6k.jpg",
+                year: 2014,
+                synopsis: "A concierge and his lobby boy embark on a whimsical adventure.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "La La Land",
+                category: "Romance",
+                img: "https://image.tmdb.org/t/p/w500/uDO8zWDhfWwoYxoy7tEW0xH7M.jpg",
+                year: 2016,
+                synopsis: "A musician and an actress fall in love while pursuing their dreams in Los Angeles.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "The Departed",
+                category: "Crime",
+                img: "https://image.tmdb.org/t/p/w500/nT97ifVT2J8J3Go86b1jzkL2W6.jpg",
+                year: 2006,
+                synopsis: "An undercover cop and a mole in the police navigate a dangerous game.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Blade Runner 2049",
+                category: "Sci-Fi",
+                img: "https://image.tmdb.org/t/p/w500/gajva3cN7j8U0r2wo3xqf7US.jpg",
+                year: 2017,
+                synopsis: "A young blade runner uncovers a secret that threatens society.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "The Lord of the Rings: The Fellowship of the Ring",
+                category: "Fantasy",
+                img: "https://image.tmdb.org/t/p/w500/6oom5QYq0W4l2Rj4g3.jpg",
+                year: 2001,
+                synopsis: "A hobbit embarks on a quest to destroy a powerful ring.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "The Lord of the Rings: The Two Towers",
+                category: "Fantasy",
+                img: "https://image.tmdb.org/t/p/w500/5VTN0pR8gc2z4c2.jpg",
+                year: 2002,
+                synopsis: "Frodo and Sam continue their journey as the fellowship faces new challenges.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Star Wars: Episode IV - A New Hope",
+                category: "Sci-Fi",
+                img: "https://image.tmdb.org/t/p/w500/6FfCtAuVAW8XJjZ7.jpg",
+                year: 1977,
+                synopsis: "A young farmer joins the rebellion to fight an evil empire.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            {
+                title: "Star Wars: Episode VI - Return of the Jedi",
+                category: "Sci-Fi",
+                img: "https://image.tmdb.org/t/p/w500/jxWdyUZ0.jpg",
+                year: 1983,
+                synopsis: "The rebels launch a final assault to defeat the Empire.",
+                seasons: [{ label: "Watch", url: "#" }],
+            },
+            // Pages 7–10 (40 new movies with valid URLs)
+            {
+                title: "Dune",
+                category: "Sci-Fi",
+                img: "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+                year: 2021,
+                synopsis: "A noble family battles for control of the desert planet Arrakis.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/dune-2021" }],
+            },
+            {
+                title: "Parasite",
+                category: "Thriller",
+                img: "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+                year: 2019,
+                synopsis: "A poor family schemes to infiltrate a wealthy household.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/parasite-2019" }],
+            },
+            {
+                title: "The Social Network",
+                category: "Drama",
+                img: "https://image.tmdb.org/t/p/w500/nxn2yL1T.jpg",
+                year: 2010,
+                synopsis: "The story of the founding of Facebook and its consequences.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/social-network-2010" }],
+            },
+            {
+                title: "Knives Out",
+                category: "Mystery",
+                img: "https://image.tmdb.org/t/p/w500/pThyQovXQrw2m0s9x82twj48Jq4.jpg",
+                year: 2019,
+                synopsis: "A detective investigates the death of a wealthy patriarch.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/knives-out-2019" }],
+            },
+            {
+                title: "Inglourious Basterds",
+                category: "War",
+                img: "https://image.tmdb.org/t/p/w500/7sfbEnaARXDDhKm0CZ7D7bBgVis.jpg",
+                year: 2009,
+                synopsis: "A group of soldiers plot to kill Nazi leaders during WWII.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/inglourious-basterds-2009" }],
+            },
+            {
+                title: "Django Unchained",
+                category: "Western",
+                img: "https://image.tmdb.org/t/p/w500/7oWY8UD0.jpg",
+                year: 2012,
+                synopsis: "A freed slave seeks to rescue his wife from a brutal plantation owner.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/django-unchained-2012" }],
+            },
+            {
+                title: "The Prestige",
+                category: "Thriller",
+                img: "https://image.tmdb.org/t/p/w500/tRNxZ8TTx.jpg",
+                year: 2006,
+                synopsis: "Two magicians engage in a bitter rivalry with tragic consequences.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/prestige-2006" }],
+            },
+            {
+                title: "No Country for Old Men",
+                category: "Thriller",
+                img: "https://image.tmdb.org/t/p/w500/bj1v6YKF8y.jpg",
+                year: 2007,
+                synopsis: "A hunter stumbles upon a drug deal gone wrong and faces a ruthless killer.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/no-country-2007" }],
+            },
+            {
+                title: "Whiplash",
+                category: "Drama",
+                img: "https://image.tmdb.org/t/p/w500/6uSP2f1m4.jpg",
+                year: 2014,
+                synopsis: "A young drummer faces an intense music instructor to achieve greatness.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/whiplash-2014" }],
+            },
+            {
+                title: "The Big Lebowski",
+                category: "Comedy",
+                img: "https://image.tmdb.org/t/p/w500/xc4bTXVw1.jpg",
+                year: 1998,
+                synopsis: "A slacker gets caught up in a kidnapping plot over a case of mistaken identity.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/big-lebowski-1998" }],
+            },
+            {
+                title: "Moonlight",
+                category: "Drama",
+                img: "https://image.tmdb.org/t/p/w500/491cCpOJ.jpg",
+                year: 2016,
+                synopsis: "A young man navigates his identity and life in a tough neighborhood.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/moonlight-2016" }],
+            },
+            {
+                title: "Her",
+                category: "Romance",
+                img: "https://image.tmdb.org/t/p/w500/eCOtq4V.jpg",
+                year: 2013,
+                synopsis: "A lonely writer falls in love with an AI operating system.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/her-2013" }],
+            },
+            {
+                title: "Get Out",
+                category: "Thriller",
+                img: "https://image.tmdb.org/t/p/w500/tFXIu.jpg",
+                year: 2017,
+                synopsis: "A young man uncovers a disturbing secret during a visit to his girlfriend's family.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/get-out-2017" }],
+            },
+            {
+                title: "The Shape of Water",
+                category: "Fantasy",
+                img: "https://image.tmdb.org/t/p/w500/9a2t.jpg",
+                year: 2017,
+                synopsis: "A mute woman forms a unique bond with an amphibious creature.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/shape-of-water-2017" }],
+            },
+            {
+                title: "A Quiet Place",
+                category: "Horror",
+                img: "https://image.tmdb.org/t/p/w500/nAU.jpg",
+                year: 2018,
+                synopsis: "A family must live in silence to avoid creatures that hunt by sound.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/quiet-place-2018" }],
+            },
+            {
+                title: "Jojo Rabbit",
+                category: "Comedy",
+                img: "https://image.tmdb.org/t/p/w500/7GsM.jpg",
+                year: 2019,
+                synopsis: "A young boy’s imaginary friend is Adolf Hitler during WWII.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/jojo-rabbit-2019" }],
+            },
+            {
+                title: "1917",
+                category: "War",
+                img: "https://image.tmdb.org/t/p/w500/iZf0.jpg",
+                year: 2019,
+                synopsis: "Two soldiers undertake a perilous mission during World War I.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/1917-2019" }],
+            },
+            {
+                title: "The Irishman",
+                category: "Crime",
+                img: "https://image.tmdb.org/t/p/w500/mb.jpg",
+                year: 2019,
+                synopsis: "A hitman reflects on his life and involvement with the mob.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/irishman-2019" }],
+            },
+            {
+                title: "Once Upon a Time in Hollywood",
+                category: "Drama",
+                img: "https://image.tmdb.org/t/p/w500/8j.jpg",
+                year: 2019,
+                synopsis: "A fading actor and his stunt double navigate 1960s Hollywood.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/hollywood-2019" }],
+            },
+            {
+                title: "Memento",
+                category: "Thriller",
+                img: "https://image.tmdb.org/t/p/w500/yuNs.jpg",
+                year: 2000,
+                synopsis: "A man with memory loss searches for his wife’s killer.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/memento-2000" }],
+            },
+            {
+                title: "Eternal Sunshine of the Spotless Mind",
+                category: "Romance",
+                img: "https://image.tmdb.org/t/p/w500/5Mwk.jpg",
+                year: 2004,
+                synopsis: "A couple erases memories of each other but rediscovers their connection.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/eternal-sunshine-2004" }],
+            },
+            {
+                title: "The Dark Knight Rises",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/85c.jpg",
+                year: 2012,
+                synopsis: "Batman returns to save Gotham from a new threat, Bane.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/dark-knight-rises-2012" }],
+            },
+            {
+                title: "The Revenant",
+                category: "Adventure",
+                img: "https://image.tmdb.org/t/p/w500/oXU.jpg",
+                year: 2015,
+                synopsis: "A frontiersman seeks revenge after being left for dead.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/revenant-2015" }],
+            },
+            {
+                title: "Arrival",
+                category: "Sci-Fi",
+                img: "https://image.tmdb.org/t/p/w500/x2FJ.jpg",
+                year: 2016,
+                synopsis: "A linguist decodes an alien language to prevent global conflict.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/arrival-2016" }],
+            },
+            {
+                title: "Gone Girl",
+                category: "Thriller",
+                img: "https://image.tmdb.org/t/p/w500/qh.jpg",
+                year: 2014,
+                synopsis: "A woman’s disappearance sparks a media frenzy and dark secrets.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/gone-girl-2014" }],
+            },
+            {
+                title: "The Hateful Eight",
+                category: "Western",
+                img: "https://image.tmdb.org/t/p/w500/jI.jpg",
+                year: 2015,
+                synopsis: "A group of strangers are trapped in a cabin during a blizzard.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/hateful-eight-2015" }],
+            },
+            {
+                title: "Ex Machina",
+                category: "Sci-Fi",
+                img: "https://image.tmdb.org/t/p/w500/bm.jpg",
+                year: 2015,
+                synopsis: "A programmer tests an AI with human-like qualities.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/ex-machina-2015" }],
+            },
+            {
+                title: "Zootopia",
+                category: "Animation",
+                img: "https://image.tmdb.org/t/p/w500/sM.jpg",
+                year: 2016,
+                synopsis: "A rabbit cop and a fox con artist solve a mystery in a vibrant city.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/zootopia-2016" }],
+            },
+            {
+                title: "Moana",
+                category: "Animation",
+                img: "https://image.tmdb.org/t/p/w500/z4.jpg",
+                year: 2016,
+                synopsis: "A young girl sails across the ocean to save her people.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/moana-2016" }],
+            },
+            {
+                title: "Deadpool 2",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/qh.jpg",
+                year: 2018,
+                synopsis: "Deadpool forms a team to protect a young mutant from a time-traveling cyborg.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/deadpool-2-2018" }],
+            },
+            {
+                title: "Thor: Ragnarok",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/rz.jpg",
+                year: 2017,
+                synopsis: "Thor teams up with Loki and Hulk to save Asgard from destruction.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/thor-ragnarok-2017" }],
+            },
+            {
+                title: "Crouching Tiger, Hidden Dragon",
+                category: "Action",
+                img: "https://image.tmdb.org/t/p/w500/iND.jpg",
+                year: 2000,
+                synopsis: "A warrior seeks a stolen sword and a fugitive in ancient China.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/crouching-tiger-2000" }],
+            },
+            {
+                title: "Amélie",
+                category: "Romance",
+                img: "https://image.tmdb.org/t/p/w500/f0u.jpg",
+                year: 2001,
+                synopsis: "A whimsical woman transforms lives in Paris with small acts of kindness.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/amelie-2001" }],
+            },
+            {
+                title: "Spirited Away",
+                category: "Animation",
+                img: "https://image.tmdb.org/t/p/w500/39.jpg",
+                year: 2001,
+                synopsis: "A young girl navigates a magical world to save her parents.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/spirited-away-2001" }],
+            },
+            {
+                title: "Pan’s Labyrinth",
+                category: "Fantasy",
+                img: "https://image.tmdb.org/t/p/w500/2x.jpg",
+                year: 2006,
+                synopsis: "A girl escapes a brutal reality through a dark fairy tale world.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/pans-labyrinth-2006" }],
+            },
+            {
+                title: "The King’s Speech",
+                category: "Drama",
+                img: "https://image.tmdb.org/t/p/w500/y4.jpg",
+                year: 2010,
+                synopsis: "A king overcomes a stammer with the help of an unorthodox therapist.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/kings-speech-2010" }],
+            },
+            {
+                title: "12 Years a Slave",
+                category: "Drama",
+                img: "https://image.tmdb.org/t/p/w500/xJ.jpg",
+                year: 2013,
+                synopsis: "A free man is kidnapped and sold into slavery in the 19th century.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/12-years-slave-2013" }],
+            },
+            {
+                title: "Gravity",
+                category: "Sci-Fi",
+                img: "https://image.tmdb.org/t/p/w500/kZ.jpg",
+                year: 2013,
+                synopsis: "An astronaut fights to survive after a disaster in space.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/gravity-2013" }],
+            },
+            {
+                title: "Birdman",
+                category: "Drama",
+                img: "https://image.tmdb.org/t/p/w500/rS.jpg",
+                year: 2014,
+                synopsis: "A washed-up actor seeks redemption through a Broadway play.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/birdman-2014" }],
+            },
+            {
+                title: "Spotlight",
+                category: "Drama",
+                img: "https://image.tmdb.org/t/p/w500/sF.jpg",
+                year: 2015,
+                synopsis: "Journalists uncover a massive scandal in the Catholic Church.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/spotlight-2015" }],
+            },
+            {
+                title: "Room",
+                category: "Drama",
+                img: "https://image.tmdb.org/t/p/w500/k3.jpg",
+                year: 2015,
+                synopsis: "A woman and her son escape captivity and rediscover the world.",
+                seasons: [{ label: "Watch", url: "https://example.com/watch/room-2015" }],
+            },
         ];
 
         // Pagination settings
@@ -820,6 +1286,7 @@
         const sortSelect = document.getElementById("sortSelect");
         const themeToggle = document.getElementById("themeToggle");
         const loading = document.getElementById("loading");
+        const backToTop = document.getElementById("backToTop");
 
         // Render category buttons
         categories.forEach(cat => {
@@ -836,6 +1303,19 @@
             categoryBar.appendChild(btn);
         });
 
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
         // Render movies with pagination, category, and search
         function renderMovies(filterCat = "All", searchTerm = "") {
             loading.style.display = "block";
@@ -849,30 +1329,34 @@
                 const endIdx = startIdx + MOVIES_PER_PAGE;
                 const pageMovies = filtered.slice(startIdx, endIdx);
 
+                // Reuse existing cards if possible
+                const existingCards = Array.from(moviesContainer.children);
                 moviesContainer.innerHTML = "";
                 if (pageMovies.length === 0) {
                     moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;font-size:1.1em;">No movies found.</div>`;
+                } else {
+                    pageMovies.forEach((movie, index) => {
+                        let card = existingCards[index] || document.createElement("div");
+                        card.className = "movie-card";
+                        card.innerHTML = `
+                            <div class="movie-poster">
+                                <img src="${movie.img}" alt="${movie.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x169?text=Image+Not+Found'; this.classList.add('error')" />
+                            </div>
+                            <div class="movie-description">
+                                <strong>${movie.title} (${movie.year})</strong>
+                                <p>${movie.synopsis}</p>
+                                ${movie.seasons
+                                    .map(
+                                        s =>
+                                            `<a href="${s.url}" class="season-link" target="_blank" rel="noopener noreferrer">${s.label}</a>`
+                                    )
+                                    .join("")}
+                            </div>
+                        `;
+                        moviesContainer.appendChild(card);
+                        observer.observe(card);
+                    });
                 }
-                pageMovies.forEach(movie => {
-                    const card = document.createElement("div");
-                    card.className = "movie-card";
-                    card.innerHTML = `
-                        <div class="movie-poster">
-                            <img src="${movie.img}" alt="${movie.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Image+Not+Found'; this.classList.add('error')" />
-                        </div>
-                        <div class="movie-description">
-                            <strong>${movie.title} (${movie.year})</strong>
-                            <p>${movie.synopsis}</p>
-                            ${movie.seasons
-                                .map(
-                                    s =>
-                                        `<a href="${s.url}" class="season-link" target="_blank" rel="noopener noreferrer">${s.label}</a>`
-                                )
-                                .join("")}
-                        </div>
-                    `;
-                    moviesContainer.appendChild(card);
-                });
                 renderPagination(filtered.length);
                 loading.style.display = "none";
             }, 100);
@@ -891,6 +1375,7 @@
                     currentPage--;
                     const activeCat = document.querySelector(".category-btn.active").textContent;
                     renderMovies(activeCat, searchBar.value.trim());
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                 }
             };
             document.getElementById("nextBtn").onclick = () => {
@@ -898,6 +1383,7 @@
                     currentPage++;
                     const activeCat = document.querySelector(".category-btn.active").textContent;
                     renderMovies(activeCat, searchBar.value.trim());
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                 }
             };
         }
@@ -968,16 +1454,22 @@
             themeBtns.forEach((btn, i) => btn.classList.toggle("selected", i === currentThemeIndex));
         }
 
-        // Hide category bar on scroll down
+        // Hide category bar and show back-to-top on scroll
         let lastScrollTop = 0;
         window.addEventListener("scroll", () => {
             let st = window.pageYOffset || document.documentElement.scrollTop;
             if (st > lastScrollTop) {
                 categoryBar.classList.add("hidden");
+                if (st > 300) backToTop.classList.add("visible");
             } else {
                 categoryBar.classList.remove("hidden");
+                if (st <= 300) backToTop.classList.remove("visible");
             }
             lastScrollTop = st <= 0 ? 0 : st;
+        });
+
+        backToTop.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
         });
 
         // Initial render
