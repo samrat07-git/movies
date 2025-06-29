@@ -323,6 +323,32 @@
         .back-to-top:hover {
             transform: translateY(-5px);
         }
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1003;
+            justify-content: center;
+            align-items: center;
+        }
+        .image-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+        .image-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 10px;
+        }
         footer {
             text-align: center;
             padding: 20px;
@@ -424,7 +450,7 @@
             <button class="theme-btn" style="background: #bbdefb" title="Blue" data-theme="theme-blue" aria-label="Blue theme"></button>
             <button class="theme-btn" style="background: #fce4ec" title="Rose" data-theme="theme-rose" aria-label="Rose theme"></button>
             <button class="theme-btn" style="background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff)" title="RGB Lightning" data-theme="theme-rgb-lightning" aria-label="RGB Lightning theme"></button>
-            <button class="theme-toggle" id="themeToggle">Toggle Auto Theme</button>
+            <button class="theme-toggle" id="themeToggle">Enable Auto Theme</button>
         </div>
         <select id="sortSelect" aria-label="Sort movies">
             <option value="title">Sort by Title</option>
@@ -437,12 +463,15 @@
     <div class="loading" id="loading" style="display: none;">Loading...</div>
     <div class="marquee">00101010101001100101101110101001010110101010100101010101001010111001010101010010101010101010101010101011101000101011110101001011</div>
     <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+    <div class="image-modal" id="imageModal">
+        <span class="image-modal-close" id="imageModalClose">&times;</span>
+        <img id="modalImage" src="" alt="Full movie poster" />
+    </div>
     <footer>© 2025 Samart's Gallery. All rights reserved.</footer>
 
     <script>
         // Simulated movies.json data (expanded to 100 movies for 10 pages)
         const movies = [
-            // Pages 1–6 (60 movies, unchanged from previous code)
             {
                 title: "Interstellar",
                 category: "Sci-Fi",
@@ -492,20 +521,20 @@
                 seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "Pulp Fiction",
-                category: "Crime",
-                img: "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8io7PM.jpg",
-                year: 1994,
-                synopsis: "The lives of two mob hitmen, a boxer, and others intertwine in a tale of violence.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "Puss in boots",
+                category: "Animation",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/puss-in-boots-2011-dual-audio-hindi-english-480p-720p-1080p-1-740x1110.jpg",
+                year:6666 ,
+                synopsis: "This is the true story of The Cat, The Myth, The Legend… The Boots.",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/13720" }],
             },
             {
-                title: "Forrest Gump",
+                title: "The persuit of happiness ",
                 category: "Drama",
-                img: "https://image.tmdb.org/t/p/w500/saHP97rE1blB3X1oU3yVhm2Ang.jpg",
-                year: 1994,
-                synopsis: "The life story of a man with a low IQ who achieves great things.",
-                seasons: [{ label: "Watch", url: "#" }],
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/the-pursuit-of-happyness-2006-dual-audio-english-hindi-480p-720p-1080p-740x1110.jpg",
+                year: 2006,
+                synopsis: ".",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/13994" }],
             },
             {
                 title: "Fight Club",
@@ -548,7 +577,7 @@
                 seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "Star Wars: Episode V - The Empire Strikes Back",
+                title: "Star Wars: Episode V - The EmpireMuseum",
                 category: "Sci-Fi",
                 img: "https://image.tmdb.org/t/p/w500/6u1fYtxG5eqjhtCPDx04pJphGDW.jpg",
                 year: 1980,
@@ -592,28 +621,28 @@
                 ],
             },
             {
-                title: "Gladiator",
+                title: "F9 the fast saga ",
                 category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/ty8TGR7vMDP1KceX0uH6e6gYxY.jpg",
-                year: 2000,
-                synopsis: "A betrayed Roman general seeks revenge against a corrupt emperor.",
-                seasons: [{ label: "Watch", url: "#" }],
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/f9-the-fast-saga-2021-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2021,
+                synopsis: "",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/13617" }],
             },
             {
-                title: "Jurassic Park",
-                category: "Adventure",
-                img: "https://image.tmdb.org/t/p/w500/oU7zEHnzl2yruwE3oCU0PE6L8BS.jpg",
-                year: 1993,
-                synopsis: "A theme park's cloned dinosaurs break free, causing chaos.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "Art of deception ",
+                category: "Action",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/art-of-deception-2019-dual-audio-hindi-english-480p-720p-1080p-740x1090.jpg",
+                year: 2019,
+                synopsis: "thriller",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/11545" }],
             },
             {
-                title: "Titanic",
+                title: "After",
                 category: "Romance",
-                img: "https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOY.jpg",
-                year: 1997,
-                synopsis: "A love story unfolds aboard the ill-fated RMS Titanic.",
-                seasons: [{ label: "Watch", url: "#" }],
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/after-everything-2023-english-480p-720p-1080p-740x1110.jpg",
+                year: 2023,
+                synopsis: "Besieged by writer’s block and the crushing breakup with Tessa, Hardin travels to Portugal in search of a woman he wronged in the past – and to find himself..",
+                seasons: [{ label: "Download 720", url: "https://mvlink.site/15794" }],
             },
             {
                 title: "The Lion King",
@@ -676,12 +705,12 @@
                 ],
             },
             {
-                title: "Wonder Woman",
+                title: "Jurassic predator",
                 category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/imekS7f1OuHyUP2LAiTEM0zBzUz.jpg",
-                year: 2017,
-                synopsis: "An Amazon princess leaves her island to end a world war.",
-                seasons: [{ label: "Watch", url: "#" }],
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/jurassic-predator-2018-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2018,
+                synopsis: ".",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/11821" }],
             },
             {
                 title: "Spider-Man: Into the Spider-Verse",
@@ -790,10 +819,10 @@
             {
                 title: "Captain America: The First Avenger",
                 category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/vSNxAJpE9z1rV5S5e8xiyW4JPUD.jpg",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/captain-america-the-first-avenger-2011-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
                 year: 2011,
                 synopsis: "A frail man becomes a super-soldier during World War II.",
-                seasons: [{ label: "Watch", url: "#" }],
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/18434" }],
             },
             {
                 title: "Doctor Strange",
@@ -804,28 +833,28 @@
                 seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "Black Widow",
-                category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/qAZ0pZAwS2AvtMk1n2b0d2O5ld.jpg",
-                year: 2021,
-                synopsis: "Natasha Romanoff confronts her past as a spy.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "Alienoid",
+                category: "Sci-Fi",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/alienoid-2022-multi-audio-hindi-english-korean-480p-720p-1080p-1-740x1110.jpg",
+                year: 2022,
+                synopsis: "sifi.",
+                seasons: [{ label: "720p", url: "https://mvlink.site/17604" }],
             },
             {
-                title: "Ant-Man",
+                title: "World War Z",
                 category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/rS97hUJ1otKTTripPmlmU9M3wU.jpg",
-                year: 2015,
-                synopsis: "A thief uses a shrinking suit to pull off a heist.",
-                seasons: [{ label: "Watch", url: "#" }],
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/world-war-z-2013-dual-audio-english-hindi-480p-720p-1080p-740x1110.jpg",
+                year: 2013,
+                synopsis: "zombie survive with family ",
+                seasons: [{ label: "Download ", url: "https://mvlink.site/15828" }],
             },
             {
-                title: "Guardians of the Galaxy Vol. 2",
-                category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/y4MBh0EjBlMuOzv9axM4qJlmhzz.jpg",
-                year: 2017,
+                title: "the last kingdom ",
+                category: "Adventure",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/the-last-kingdom-seven-kings-must-die-2023-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2023,
                 synopsis: "The Guardians unravel the mystery of Star-Lord's parentage.",
-                seasons: [{ label: "Watch", url: "#" }],
+                seasons: [{ label: "download ", url: "https://mvlink.site/12759" }],
             },
             {
                 title: "Captain Marvel",
@@ -844,22 +873,21 @@
                 seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "Spider-Man: Homecoming",
+                title: "Downsizing",
                 category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/c24sv2weTHPsmDa7jEMN0m2P3RT.jpg",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/everly-2014-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
                 year: 2017,
-                synopsis: "Peter Parker balances high school and being Spider-Man.",
-                seasons: [{ label: "Watch", url: "#" }],
+                synopsis: "After she betrays a powerful mob boss, a woman matches wits and weaponry with a legion of killers who are out to collect the bounty on the heads of her and her family.",
+                seasons: [{ label: "Download  720", url: "https://mvlink.site/18940" }],
             },
             {
-                title: "Spider-Man: Far From Home",
+                title: "Aporia",
                 category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/4q2NNj4S5dGSe7daD2icqTlnV.jpg",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/aporia-2019-dual-audio-hindi-turkish-480p-720p-1080p-740x1046.jpg",
                 year: 2019,
-                synopsis: "Spider-Man faces new threats while on a school trip in Europe.",
-                seasons: [{ label: "Watch", url: "#" }],
+                synopsis: "in hindi",
+                seasons: [{ label: "Download 720", url: "https://mvlink.site/12298" }],
             },
-            // Additional movies to complete 60 for pages 1–6 (unchanged)
             {
                 title: "The Wolf of Wall Street",
                 category: "Drama",
@@ -877,12 +905,12 @@
                 seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "The Grand Budapest Hotel",
-                category: "Comedy",
-                img: "https://image.tmdb.org/t/p/w500/nX5XotM9yprCKarRH4fz08I6k.jpg",
-                year: 2014,
-                synopsis: "A concierge and his lobby boy embark on a whimsical adventure.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "The beekeeper",
+                category: "Crime",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/the-beekeeper-2024-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2024,
+                synopsis: "One man’s campaign for vengeance takes on national stakes after he is revealed to be a former operative of a powerful and clandestine organization known as Beekeepers..",
+                seasons: [{ label: "Download ", url: "https://mvlink.site/17985" }],
             },
             {
                 title: "La La Land",
@@ -940,7 +968,6 @@
                 synopsis: "The rebels launch a final assault to defeat the Empire.",
                 seasons: [{ label: "Watch", url: "#" }],
             },
-            // Pages 7–10 (40 new movies with valid URLs)
             {
                 title: "Dune",
                 category: "Sci-Fi",
@@ -1262,12 +1289,52 @@
                 seasons: [{ label: "Watch", url: "https://example.com/watch/spotlight-2015" }],
             },
             {
-                title: "Room",
-                category: "Drama",
-                img: "https://image.tmdb.org/t/p/w500/k3.jpg",
-                year: 2015,
-                synopsis: "A woman and her son escape captivity and rediscover the world.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/room-2015" }],
+                title: "Lift",
+                category: "Comedy ",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/lift-2024-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2024,
+                synopsis: "An international heist crew, led by Cyrus Whitaker, race to lift $500 million in gold from a passenger plane at 40,000 feet.",
+                seasons: [{ label: "Download ", url: "https://mvlink.site/17652" }],
+            },
+            {
+                title: "My fault ",
+                category: "Romance",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/my-fault-2023-multi-audio-hindi-english-spanish-480p-720p-1080p-740x1110.jpg",
+                year:2023,
+                synopsis: "As a proud and independent 17 year old, Noah resists living in a mansion surrounded by luxury.",
+                seasons: [{ label: "Download 720p ", url: "https://mvlink.site/13654" }],
+            },
+            {
+                title: "out of africa",
+                category: "Romance",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/out-of-africa-1985-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year:1985,
+                synopsis: "The film is based on her 1937 autobiographical novel.",
+                seasons: [{ label: "Download 720p ", url: "https://mvlink.site/11883" }],
+            },
+            {
+                title: "the nutty professor ",
+                category: "Comedy",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/the-nutty-professor-1996-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year:1996,
+                synopsis: "",
+                seasons: [{ label: "Download 720p ", url: "https://mvlink.site/11896" }],
+            },
+            {
+                title: "Friends with benifits",
+                category: "Romance",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/friends-with-benefits-2011-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year:2011,
+                synopsis: "",
+                seasons: [{ label: "Download 720p ", url: "https://mvlink.site/12067" }],
+            },
+            {
+                title: "No hard feeling",
+                category: "Romance",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/no-hard-feelings-2023-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year:2023,
+                synopsis: "",
+                seasons: [{ label: "Download 720p ", url: "https://mvlink.site/15238" }],
             },
         ];
 
@@ -1287,6 +1354,9 @@
         const themeToggle = document.getElementById("themeToggle");
         const loading = document.getElementById("loading");
         const backToTop = document.getElementById("backToTop");
+        const imageModal = document.getElementById("imageModal");
+        const modalImage = document.getElementById("modalImage");
+        const modalClose = document.getElementById("imageModalClose");
 
         // Render category buttons
         categories.forEach(cat => {
@@ -1358,6 +1428,17 @@
                     });
                 }
                 renderPagination(filtered.length);
+                // Add click event listeners to images for mobile view
+                if (window.innerWidth <= 600) {
+                    document.querySelectorAll(".movie-poster img").forEach(img => {
+                        img.style.cursor = "pointer";
+                        img.addEventListener("click", () => {
+                            modalImage.src = img.src;
+                            modalImage.alt = img.alt;
+                            imageModal.style.display = "flex";
+                        });
+                    });
+                }
                 loading.style.display = "none";
             }, 100);
         }
@@ -1419,8 +1500,9 @@
             "theme-rgb-lightning",
         ];
         let currentThemeIndex = 0;
-        let autoSwitch = localStorage.getItem("autoSwitchTheme") !== "false";
-        themeToggle.textContent = autoSwitch ? "Disable Auto Theme" : "Enable Auto Theme";
+        let autoSwitch = false;
+        localStorage.setItem("autoSwitchTheme", autoSwitch);
+        themeToggle.textContent = "Enable Auto Theme";
 
         themeBtns.forEach((btn, i) => {
             btn.addEventListener("click", () => {
@@ -1438,21 +1520,23 @@
             themeToggle.textContent = autoSwitch ? "Disable Auto Theme" : "Enable Auto Theme";
         });
 
-        if (autoSwitch) {
-            setInterval(() => {
-                currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-                document.body.className = themes[currentThemeIndex];
-                themeBtns.forEach((btn, i) => btn.classList.toggle("selected", i === currentThemeIndex));
-                localStorage.setItem("movieTheme", themes[currentThemeIndex]);
-            }, 10000);
-        }
-
         const savedTheme = localStorage.getItem("movieTheme");
         if (savedTheme && themes.includes(savedTheme)) {
             document.body.className = savedTheme;
             currentThemeIndex = themes.indexOf(savedTheme);
             themeBtns.forEach((btn, i) => btn.classList.toggle("selected", i === currentThemeIndex));
         }
+
+        // Modal close functionality
+        modalClose.addEventListener("click", () => {
+            imageModal.style.display = "none";
+        });
+
+        imageModal.addEventListener("click", (e) => {
+            if (e.target === imageModal) {
+                imageModal.style.display = "none";
+            }
+        });
 
         // Hide category bar and show back-to-top on scroll
         let lastScrollTop = 0;
