@@ -463,6 +463,13 @@
 <body>
     <header class="header">
         <div class="logo" title="Samart's Gallery">⚡️ Samart's Gallery</div>
+        <a href="https://samrat07-git.github.io/Stuffs/" style="display:flex;align-items:center;border:1px solid #ccc;border-radius:10px;padding:10px;text-decoration:none;color:#333;font-family:sans-serif;width:300px;">
+    <img src="https://preview.redd.it/world-war-ii-if-it-was-fought-by-cats-v0-xu2afvux217b1.jpg?width=640&crop=smart&auto=webp&s=239c39fe4844d6394ef1c48072b8934c3e71ad2f" alt="Thumbnail" style="width:80px;height:80px;border-radius:8px;margin-right:10px;">
+    <div>
+        <div style="font-weight:bold;margin-bottom:4px;">Samrat.sr</div>
+        <div style="font-size:0.9em;color:#555;">connected link.</div>
+    </div>
+</a>
         <input id="searchBar" class="search-bar" type="text" placeholder="Search movies..." aria-label="Search movies" />
         <div class="theme-picker" aria-label="Theme picker">
             <button class="theme-btn selected" style="background: #fff; border: 1px solid #ccc" title="Light" data-theme="theme-light" aria-label="Light theme"></button>
@@ -473,21 +480,38 @@
             <button class="theme-btn" style="background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff)" title="RGB Lightning" data-theme="theme-rgb-lightning" aria-label="RGB Lightning theme"></button>
             <button class="theme-toggle" id="themeToggle">Enable Auto Theme</button>
         </div>
+
         <select id="sortSelect" aria-label="Sort movies">
             <option value="title">Sort by Title</option>
+
             <option value="category">Sort by Category</option>
         </select>
     </header>
+        <span style="display:inline-block; animation: pop 0.6s ease infinite alternate; font-weight:bold;">MEN are BRAVE💣💣💣💣💣💣💣💣💣💣💣💣💣💣!</span>
+        <style>
+         @keyframes pop {
+                    0% { transform: scale(1); color: gold; }
+         90% { transform: scale(0.7); color: orange; }
+}
+</style>
     <nav class="category-bar" id="categoryBar" role="navigation"></nav>
     <main class="movies-container" id="moviesContainer"></main>
     <div class="pagination" id="paginationBar" role="navigation"></div>
     <div class="loading" id="loading" style="display: none;">Loading...</div>
+    <div style="background: #fff8dc; border-left: 5px solid gold; padding: 12px 16px; border-radius: 6px; font-family: sans-serif; color: #333; max-width: 400px;">
+    <strong style="color: goldenrod;">💡 Instructions:</strong>
+    <p style="margin: 8px 0 0 0; font-size: 0.95em;">
+        Click the download button below to download movies ,only 720p 10 bits color is provided . Make sure your internet connection is stable for the best experience.
+    </p>
+</div>
     <div class="marquee" aria-hidden="true">00101010101001100101101110101001010110101010100101010101001010111001010101010010101010101010101010101011101000101011110101001011</div>
     <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
     <div class="image-modal" id="imageModal">
         <span class="image-modal-close" id="imageModalClose">×</span>
         <img id="modalImage" src="" alt="Full movie poster" />
     </div>
+    <span style="animation: explode 0.3s ease-in-out infinite alternate; font-size: 1.5em;">💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣</span>
+<style>@keyframes explode { 0% { transform: scale(1); } 100% { transform: scale(1.5) rotate(20deg); color: red; } }</style>
     <footer>© 2025 Samart's Gallery. All rights reserved.</footer>
 
     <script>
@@ -518,12 +542,12 @@
                 seasons: [{ label: "720p ^click", url: "https://mvlink.site/13818" }],
             },
             {
-                title: "The Shawshank Redemption",
-                category: "Drama",
-                img: "https://image.tmdb.org/t/p/w500/9O7gLzmreU0nGkIB6K3BsJbzvNv.jpg",
-                year: 1994,
-                synopsis: "Two imprisoned men bond over several years, finding solace and eventual redemption.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "All quite on the western front",
+                category: "War",
+                img: "https://joshmovies.com/wp-content/uploads/2025/07/all-quiet-on-the-western-front-2022-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2022,
+                synopsis: "german french war.",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/10653" }],
             },
             {
                 title: "The Godfather",
@@ -550,7 +574,7 @@
                 seasons: [{ label: "Download 720p", url: "https://mvlink.site/13720" }],
             },
             {
-                title: "The persuit of happiness ",
+                title: "The persuit of happiness",
                 category: "Drama",
                 img: "https://joshmovies.com/wp-content/uploads/2025/06/the-pursuit-of-happyness-2006-dual-audio-english-hindi-480p-720p-1080p-740x1110.jpg",
                 year: 2006,
@@ -574,36 +598,36 @@
                 seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "The Matrix",
-                category: "Sci-Fi",
-                img: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5.jpg",
-                year: 1999,
-                synopsis: "A hacker discovers a mysterious truth about his reality.",
-                seasons: [{ label: "Watch", url: "#" }],
-            },
-            {
-                title: "Goodfellas",
-                category: "Crime",
-                img: "https://image.tmdb.org/t/p/w500/aKuFiU82s5ISJpGZp7YkTIBVqY.jpg",
-                year: 1990,
-                synopsis: "The story of a young man who rises in a mob organization.",
-                seasons: [{ label: "Watch", url: "#" }],
-            },
-            {
-                title: "The Lord of the Rings: The Return of the King",
+                title: "Enola holmes",
                 category: "Fantasy",
-                img: "https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg",
-                year: 2003,
-                synopsis: "Gandalf and Aragorn lead the World of Men against Sauron's army.",
-                seasons: [{ label: "Watch", url: "#" }],
+                img: "https://joshmovies.com/wp-content/uploads/2025/07/enola-holmes-2-2022-dual-audio-hindi-english-480p-720p-1080p-740x1109.jpgg",
+                year: 2022,
+                synopsis: "https://joshmovies.com/wp-content/uploads/2025/07/enola-holmes-2-2022-dual-audio-hindi-english-480p-720p-1080p-740x1109.jpg.",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/10681" }],
             },
             {
-                title: "Star Wars: Episode V - The EmpireMuseum",
-                category: "Sci-Fi",
-                img: "https://image.tmdb.org/t/p/w500/6u1fYtxG5eqjhtCPDx04pJphGDW.jpg",
-                year: 1980,
-                synopsis: "The rebels face attacks from the Empire as Luke trains with Yoda.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "Patriots day",
+                category: "Crime",
+                img: "https://joshmovies.com/wp-content/uploads/2025/07/patriots-day-2016-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2016,
+                synopsis: "--",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/10598" }],
+            },
+            {
+                title: "Your name",
+                category: "Animation",
+                img: "https://joshmovies.com/wp-content/uploads/2025/07/your-name-2016-multi-audio-hindi-english-japanese-480p-720p-1080p-740x1110.jpg",
+                year: 2016,
+                synopsis: "High schoolers Mitsuha and Taki are complete strangers living separate lives. But one night, they suddenly switch places. Mitsuha wakes up in Taki’s body, and he in hers. ",
+                seasons: [{ label: "Download 1080p", url: "https://mvlink.site/18014" }],
+            },
+            {
+                title: "The good nurse",
+                category: "Mystery",
+                img: "https://joshmovies.com/wp-content/uploads/2025/07/the-good-nurse-2022-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2022,
+                synopsis: "Suspicious that her colleague is responsible for a series of mysterious patient deaths, a nurse risks her own life to uncover the truth.",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/10632" }],
             },
             {
                 title: "The Silence of the Lambs",
@@ -690,20 +714,20 @@
                 seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "The Avengers",
-                category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg",
-                year: 2012,
-                synopsis: "Earth's mightiest heroes team up to stop an alien invasion.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "Separation",
+                category: "Horror",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/separation-2021-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2021,
+                synopsis: "A young girl finds solace in her artist father and the ghost of her dead mother.",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/11706" }],
             },
             {
-                title: "Black Panther",
-                category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/uxzzxoxB6K6y8S9zM3A5PCzmth.jpg",
-                year: 2018,
-                synopsis: "T'Challa returns to Wakanda to take his place as king.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "The working man",
+                category: "Thriller",
+                img: "https://joshmovies.com/wp-content/uploads/2025/05/6FRFIogh3zFnVWn7Z6zcYnIbRcX-740x1110.jpg",
+                year: 2025,
+                synopsis: "thriller",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/26614" }],
             },
             {
                 title: "Deadpool",
@@ -934,12 +958,12 @@
                 seasons: [{ label: "Download ", url: "https://mvlink.site/17985" }],
             },
             {
-                title: "La La Land",
-                category: "Romance",
-                img: "https://image.tmdb.org/t/p/w500/uDO8zWDhfWwoYxoy7tEW0xH7M.jpg",
-                year: 2016,
-                synopsis: "A musician and an actress fall in love while pursuing their dreams in Los Angeles.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "Caption america brave world",
+                category: "Action",
+                img: "https://joshmovies.com/wp-content/uploads/2025/05/4YFyYcUPfrbpj6VpgWh7xoUnwLA-740x1110.jpg",
+                year: 2025,
+                synopsis: "",
+                seasons: [{ label: "Download 1080p", url: "https://mvlink.site/26683" }],
             },
             {
                 title: "The Departed",
@@ -982,12 +1006,12 @@
                 seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "Star Wars: Episode VI - Return of the Jedi",
-                category: "Sci-Fi",
-                img: "https://image.tmdb.org/t/p/w500/jxWdyUZ0.jpg",
-                year: 1983,
-                synopsis: "The rebels launch a final assault to defeat the Empire.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "The free fall",
+                category: "Horror",
+                img: "https://joshmovies.com/wp-content/uploads/2025/07/the-free-fall-2022-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2022,
+                synopsis: "Sara wakes from a coma to a life she doesn’t remember; a fragile, slippery reality that spirals into a nightmare where nothing is as it seems",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/10518" }],
             },
             {
                 title: "Dune",
@@ -1102,12 +1126,12 @@
                 seasons: [{ label: "Watch", url: "https://example.com/watch/shape-of-water-2017" }],
             },
             {
-                title: "A Quiet Place",
-                category: "Horror",
-                img: "https://image.tmdb.org/t/p/w500/nAU.jpg",
-                year: 2018,
-                synopsis: "A family must live in silence to avoid creatures that hunt by sound.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/quiet-place-2018" }],
+                title: "Unknown killer robots",
+                category: "Documentary",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/unknown-killer-robots-2023-dual-audio-hindi-english-480p-720p-1080p-740x1111.jpg",
+                year: 2023,
+                synopsis: "What happens when a machine makes life-or-death decisions? This documentary explores the dangers of artificial intelligence in military application..",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/14348" }],
             },
             {
                 title: "Jojo Rabbit",
@@ -1120,7 +1144,7 @@
             {
                 title: "1917",
                 category: "War",
-                img: "https://image.tmdb.org/t/p/w500/iZf0.jpg",
+                img: "https://musicart.xboxlive.com/7/d44e5100-0000-0000-0000-000000000002/504/image.jpg",
                 year: 2019,
                 synopsis: "Two soldiers undertake a perilous mission during World War I.",
                 seasons: [{ label: "Watch", url: "https://example.com/watch/1917-2019" }],
@@ -1158,12 +1182,13 @@
                 seasons: [{ label: "Watch", url: "https://example.com/watch/eternal-sunshine-2004" }],
             },
             {
-                title: "The Dark Knight Rises",
+                title: "peaky blinders",
                 category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/85c.jpg",
-                year: 2012,
-                synopsis: "Batman returns to save Gotham from a new threat, Bane.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/dark-knight-rises-2012" }],
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/peaky-blinders-season-1-5-dual-audio-hindi-english-with-subtitle-740x1110.jpg",
+                synopsis: "A gangster family epic set in 1919 Birmingham, England .",
+                seasons: [{ label: "season1", url: "https://mvlink.site/web/11924",}],
+                seasons: [{ label: "season1", url: "https://mvlink.site/web/12221",}],
+
             },
             {
                 title: "The Revenant",
@@ -1246,20 +1271,20 @@
                 seasons: [{ label: "Watch", url: "https://example.com/watch/crouching-tiger-2000" }],
             },
             {
-                title: "Amélie",
-                category: "Romance",
-                img: "https://image.tmdb.org/t/p/w500/f0u.jpg",
-                year: 2001,
-                synopsis: "A whimsical woman transforms lives in Paris with small acts of kindness.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/amelie-2001" }],
+                title: "Unknown cosmic time machine",
+                category: "Documentary",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/unknown-cosmic-time-machine-2023-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2023,
+                synopsis: "A unique behind-the-scenes access to NASA’s ambitious mission to launch the James Webb Space Telescope, following a team of engineers and scientists as they take the next giant leap in our quest to understand the universe.",
+                seasons: [{ label: "Downlaod 720p", url: "https://mvlink.site/14589" }],
             },
             {
-                title: "Spirited Away",
-                category: "Animation",
-                img: "https://image.tmdb.org/t/p/w500/39.jpg",
-                year: 2001,
-                synopsis: "A young girl navigates a magical world to save her parents.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/spirited-away-2001" }],
+                title: "Youngs royals forever",
+                category: "Documentary",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/young-royals-forever-2024-multi-audio-hindi-english-swedish-480p-720p-1080p-740x1088.jpg",
+                year: 2024,
+                synopsis: "",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/18977" }],
             },
             {
                 title: "Pan’s Labyrinth",
@@ -1278,12 +1303,12 @@
                 seasons: [{ label: "Watch", url: "https://example.com/watch/kings-speech-2010" }],
             },
             {
-                title: "12 Years a Slave",
-                category: "Drama",
-                img: "https://image.tmdb.org/t/p/w500/xJ.jpg",
-                year: 2013,
-                synopsis: "A free man is kidnapped and sold into slavery in the 19th century.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/12-years-slave-2013" }],
+                title: "inside the mind of a Dog",
+                category: "Documentary",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/rajrUCW4fkvdK4EDickfpK9wLbO-740x1110.jpg",
+                year: 2025,
+                synopsis: "Embark on a delightful journey into the world of dogs in this documentary that reveals scientific and emotional insights about our lovable BFFs.",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/21277" }],
             },
             {
                 title: "Gravity",
@@ -1294,16 +1319,16 @@
                 seasons: [{ label: "Watch", url: "https://example.com/watch/gravity-2013" }],
             },
             {
-                title: "Birdman",
-                category: "Drama",
-                img: "https://image.tmdb.org/t/p/w500/rS.jpg",
-                year: 2014,
-                synopsis: "A washed-up actor seeks redemption through a Broadway play.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/birdman-2014" }],
+                title: "12 strong",
+                category: "War",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/12-strong-2018-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2018,
+                synopsis: "A team of special forces head into Afghanistan in the aftermath of the September 11th attacks in an attempt to dismantle the Taliban..",
+                seasons: [{ label: "Downlaod 720p", url: "https://mvlink.site/14072" }],
             },
             {
                 title: "The idea of you ",
-                category: "Romance ",
+                category: "Romance",
                 img: "https://joshmovies.com/wp-content/uploads/2025/06/the-idea-of-you-2024-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
                 year: 2024,
                 synopsis: "",
