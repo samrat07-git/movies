@@ -7,6 +7,8 @@
     <meta name="keywords" content="movies, movie gallery, films, watch movies, Samart's Gallery" />
     <title>Samart's Gallery - Top Famous Movies</title>
     <style>
+    <script async src="script.js"></script>
+
         :root {
             --bg: #fff;
             --text: #222;
@@ -462,8 +464,24 @@
 </head>
 <body>
     <header class="header">
-        <div class="logo" title="Samart's Gallery">⚡️ Samart's Gallery</div>
-        <a href="https://samrat07-git.github.io/Stuffs/" style="display:flex;align-items:center;border:1px solid #ccc;border-radius:10px;padding:10px;text-decoration:none;color:#333;font-family:sans-serif;width:300px;">
+
+    <style>
+    .bulb {
+        font-size: 3em;
+        transition: text-shadow 0.3s ease;
+    }
+
+    .bulb:hover {
+        text-shadow: 0 0 20px yellow;
+    }
+</style>
+
+<div class="bulb">💡</div>
+</style>
+
+<h1 class="fire-text">�HD movies</h1>
+
+     <a href="https://samrat07-git.github.io/Stuffs/" style="display:flex;align-items:center;border:1px solid #ccc;border-radius:10px;padding:10px;text-decoration:none;color:#333;font-family:sans-serif;width:300px;">
     <img src="https://preview.redd.it/world-war-ii-if-it-was-fought-by-cats-v0-xu2afvux217b1.jpg?width=640&crop=smart&auto=webp&s=239c39fe4844d6394ef1c48072b8934c3e71ad2f" alt="Thumbnail" style="width:80px;height:80px;border-radius:8px;margin-right:10px;">
     <div>
         <div style="font-weight:bold;margin-bottom:4px;">Samrat.sr</div>
@@ -487,12 +505,19 @@
             <option value="category">Sort by Category</option>
         </select>
     </header>
-        <span style="display:inline-block; animation: pop 0.6s ease infinite alternate; font-weight:bold;">MEN are BRAVE💣💣💣💣💣💣💣💣💣💣💣💣💣💣!</span>
-        <style>
-         @keyframes pop {
-                    0% { transform: scale(1); color: gold; }
-         90% { transform: scale(0.7); color: orange; }
-}
+      <style>
+    .liquid-text {
+        font-size: 3em;
+        background: url('https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif') repeat;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+</style>
+
+<h1 class="liquid-text">samrat.sr</h1>
+
+
+
 </style>
     <nav class="category-bar" id="categoryBar" role="navigation"></nav>
     <main class="movies-container" id="moviesContainer"></main>
@@ -513,8 +538,35 @@
     <span style="animation: explode 0.3s ease-in-out infinite alternate; font-size: 1.5em;">💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣</span>
 <style>@keyframes explode { 0% { transform: scale(1); } 100% { transform: scale(1.5) rotate(20deg); color: red; } }</style>
     <footer>© 2025 Samart's Gallery. All rights reserved.</footer>
+     <style>
+    .stitched {
+        border: 2px dashed #333;
+        padding: 20px;
+        background: #f9f9f9;
+        font-family: monospace;
+    }
+</style>
 
+<div class="stitched">mobile view is not optimised,may cause lag</div>!</div>
+<style>
+    .pulse {
+        width: 100px;
+        height: 100px;
+        border: 5px solid red;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+        margin: 20px auto;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(1.5); opacity: 0; }
+    }
+</style>
+
+<div class="pulse"></div>
     <script>
+
         // Simulated movies.json data (unchanged as per request)
         const movies = [
             {
@@ -630,40 +682,36 @@
                 seasons: [{ label: "Download 720p", url: "https://mvlink.site/10632" }],
             },
             {
-                title: "The Silence of the Lambs",
+                title: "Subservience ",
                 category: "Thriller",
-                img: "https://image.tmdb.org/t/p/w500/rplLJ2hPcOQmkFhTqUce0pGWO1.jpg",
-                year: 1991,
-                synopsis: "An FBI agent seeks help from a cannibalistic serial killer to catch another.",
-                seasons: [{ label: "Watch", url: "#" }],
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/gBenxR01Uy0Ev9RTIw6dVBPoyQU-740x1110.jpg",
+                year: 2025,
+                synopsis: "With his wife out sick, a struggling father brings home a lifelike AI, only to have his self-aware new help want everything her new family has to offer… Like the affection of her owner and she’ll kill to get it..",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/24912" }],
             },
             {
-                title: "Saving Private Ryan",
-                category: "War",
-                img: "https://image.tmdb.org/t/p/w500/1wY4psJ5MJKhiL3yC2xAiHj5f6W.jpg",
-                year: 1998,
-                synopsis: "A group of soldiers go behind enemy lines to rescue a paratrooper.",
-                seasons: [{ label: "Watch", url: "#" }],
-            },
-            {
-                title: "Schindler's List",
+                title: "Bogotá: City of the Lost",
                 category: "Drama",
-                img: "https://image.tmdb.org/t/p/w500/sF1U4EUQS8YHUYjNl3pMGNIQyw.jpg",
-                year: 1993,
-                synopsis: "A businessman saves thousands of Jews during the Holocaust.",
-                seasons: [{ label: "Watch", url: "#" }],
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/gRqazsKqJPzHS9vHicxUCUNutpf-740x1110.jpg",
+                year: 2025,
+                synopsis: "After moving to Bogotá for a chance at a better life, a young Korean man rises through the Colombian black market — risking peril for a shot at success.",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/24478" }],
             },
             {
-                title: "Avengers: Endgame",
-                category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg",
-                year: 2019,
-                synopsis: "The Avengers assemble to undo Thanos' actions and restore order.",
-                seasons: [
-                    { label: "Watch", url: "#" },
-                    { label: "Bonus Features", url: "#" },
-                    { label: "Gag Reel", url: "#" },
-                ],
+                title: "Dirty angels",
+                category: "War",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/1y3TG8N8zwwMxqh0qzdyDs3IyCq-740x1110.jpg",
+                year: 2024,
+                synopsis: "During the United States’ 2021 withdrawal from Afghanistan, a group of female soldiers posing as medical relief are sent back in to rescue a group of kidnapped teenagers caught between ISIS and the Taliban.",
+                seasons: [{ label: "Downoad hd", url: "https://mvlink.site/25396" }],
+            },
+            {
+                title: "I.S.S",
+                category: "Sci-Fi",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/blPAS2HZcOGLTREbUeNIWmz0B6f-740x1110.jpg",
+                year: 2024,
+                synopsis: "Tensions flare in the near future aboard the International Space Station as a conflict breaks out on Earth. U.S. and Russian astronauts receive orders from the ground: take control of the station by any means necessary..",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/27402" }],
             },
             {
                 title: "F9 the fast saga ",
@@ -738,16 +786,12 @@
                 seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "Joker",
-                category: "Drama",
-                img: "https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
-                year: 2019,
-                synopsis: "A failed comedian descends into madness in Gotham City.",
-                seasons: [
-                    { label: "Watch", url: "#" },
-                    { label: "Director's Cut", url: "#" },
-                    { label: "Making Of Documentary", url: "#" },
-                ],
+                title: "In a Violent Nature",
+                category: "Horror",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/hPfWHgq07nXbeldwEGxWB4JqwtE-740x1110.jpg",
+                year: 2024,
+                synopsis: "The enigmatic resurrection, rampage, and retribution of an undead monster in a remote wilderness unleashes an iconic new killer after a locket is removed from a collapsed fire tower that entombed its rotting corpse..",
+                seasons: [{ label: "Downoad hd", url: "https://mvlink.site/25327" }],
             },
             {
                 title: "Jurassic predator",
@@ -758,20 +802,20 @@
                 seasons: [{ label: "Download 720p", url: "https://mvlink.site/11821" }],
             },
             {
-                title: "Spider-Man: Into the Spider-Verse",
-                category: "Animation",
-                img: "https://image.tmdb.org/t/p/w500/iiZZdoQBEYBv6id8su7ImL0oCb.jpg",
-                year: 2018,
-                synopsis: "A teen becomes Spider-Man in a multiverse adventure.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "The Dive",
+                category: "Thriller",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/1aLFglfGkTFG5p6KQg9o07EN3rl-740x1110.jpg",
+                year: 2023,
+                synopsis: "Two sisters go diving at a beautiful, remote location. One of the sisters is struck by a rock, leaving her trapped 28 meters below. With dangerously low levels of oxygen and cold temperatures, it is up to her sister to fight for her life.",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/23107" }],
             },
             {
-                title: "The Incredibles",
-                category: "Animation",
-                img: "https://image.tmdb.org/t/p/w500/2LqaL4U1Dsqw2vUjQ9XgF6L6g.jpg",
-                year: 2004,
-                synopsis: "A family of superheroes saves the world from a villain.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "Dont Move",
+                category: "Thriller",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/cRDJxdnRb7ikKd6fVJTrGeaL34v-740x1110.jpg",
+                year: 2024,
+                synopsis: "A grieving woman in a secluded forest encounters a killer who injects her with a paralytic drug. As her body shuts down, her fight for survival begins.",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/22744" }],
             },
             {
                 title: "Coco",
@@ -782,12 +826,12 @@
                 seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "Up",
-                category: "Animation",
-                img: "https://image.tmdb.org/t/p/w500/vpbaStTMt8qqXaEgnRJoZGzb79.jpg",
-                year: 2009,
-                synopsis: "An elderly man flies his house to South America with balloons.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "Joker",
+                category: "Thriller",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/zPOOyw6HBb5Qo6uaWJ5UxrBR6Ll-740x1110.jpg",
+                year: 2024,
+                synopsis: "While struggling with his dual identity, Arthur Fleck not only stumbles upon true love, but also finds the music that’s always been inside him.",
+                seasons: [{ label: "Watch", url: "https://mvlink.site/22793" }],
             },
             {
                 title: "Inside Out",
@@ -798,68 +842,68 @@
                 seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "Shrek",
-                category: "Animation",
-                img: "https://image.tmdb.org/t/p/w500/iHOYcT0jCyd5vIABUMgM1E4x1I.jpg",
-                year: 2001,
-                synopsis: "An ogre rescues a princess to reclaim his swamp.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "The platform 2",
+                category: "Thriller",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/tvIpBg12IIA5Dr9Sjn38ygS1vQp-740x1096.jpg",
+                year: 2024,
+                synopsis: "After a mysterious leader imposes his law in a brutal system of vertical cells, a new arrival battles against a dubious food distribution method..",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/22396" }],
             },
             {
-                title: "Frozen",
-                category: "Animation",
-                img: "https://image.tmdb.org/t/p/w500/kgwjIbP8frx2mvTIFo9hQHD5pW.jpg",
-                year: 2013,
-                synopsis: "A princess sets off to save her kingdom from eternal winter.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "The Pool",
+                category: "Thriller",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/qmND84lMjMx32E40LID5f7WJB7u-740x1110.jpg",
+                year: 2018,
+                synopsis: "Left alone to clean up a 6-meter-deep deserted pool, Day falls asleep on an inflatable raft. When he wakes, the water level has sunk so low that he can’t climb out on his own.",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/22451" }],
             },
             {
-                title: "Harry Potter and the Sorcerer's Stone",
+                title: "X",
+                category: "Horror",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/lopZSVtXzhFY603E9OqF7O1YKsh-740x1110.jpg",
+                year: 2022,
+                synopsis: "In 1979, a group of young filmmakers set out to make an adult film in rural Texas, but when their reclusive, elderly hosts catch them in the act, the cast find themselves fighting for their lives..",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/10295" }],
+            },
+            {
+                title: "Download Kingdom of the Planet of the Apes",
                 category: "Fantasy",
-                img: "https://image.tmdb.org/t/p/w500/wuMc08IPKEatf9rnMNXvW.jpg",
-                year: 2001,
-                synopsis: "A young boy discovers he's a wizard and attends Hogwarts.",
-                seasons: [{ label: "Watch", url: "#" }],
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/gKkl37BQuKTanygYQG1pyYgLVgf-740x1110.jpg",
+                year: 2024,
+                synopsis: "Several generations following Caesar’s reign, apes – now the dominant species – live harmoniously while humans have been reduced to living in the shadows..",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/21118" }],
             },
             {
-                title: "Harry Potter and the Deathly Hallows: Part 2",
-                category: "Fantasy",
-                img: "https://image.tmdb.org/t/p/w500/c54HPq6YKnI0kTXIHkwD2RWtsg.jpg",
-                year: 2011,
-                synopsis: "Harry faces Voldemort in the final battle for Hogwarts.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "SEVEN",
+                category: "Thriller",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/se7en-1995-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 1995,
+                synopsis: "Two homicide detectives are on a desperate hunt for a serial killer whose crimes are based on the “seven deadly sins” in this dark and haunting film that takes viewers from the tortured remains of one victim to the next.",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/20524" }],
             },
             {
-                title: "Pirates of the Caribbean: The Curse of the Black Pearl",
-                category: "Adventure",
-                img: "https://image.tmdb.org/t/p/w500/z8onk7LV9Mmw6zKz4hT6pzzvmA.jpg",
-                year: 2003,
-                synopsis: "A pirate and a blacksmith rescue a kidnapped governor's daughter.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "The good shepherd",
+                category: "History",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/the-good-shepherd-2006-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2006,
+                synopsis: "see this",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/17492" }],
             },
             {
-                title: "Guardians of the Galaxy",
+                title: "Ambush",
                 category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/r7vmZjiyZw9rpJMQJdXpjgiCOk.jpg",
-                year: 2014,
-                synopsis: "A group of misfits save the galaxy from a powerful fanatic.",
-                seasons: [{ label: "Watch", url: "#" }],
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/ambush-2023-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2023,
+                synopsis: "When a small outpost is ambushed, a US Army squad must take the battle below ground on a high-stakes mission in a new type of warfare the likes of which they have never seen..",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/17240" }],
             },
             {
-                title: "Iron Man",
+                title: "john wick chapter 4",
                 category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/78lPtwv72eTNqFW9COo6Gf4xYsj.jpg",
-                year: 2008,
-                synopsis: "A billionaire builds a high-tech suit to fight evil.",
-                seasons: [{ label: "Watch", url: "#" }],
-            },
-            {
-                title: "Thor",
-                category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/prSfAi1zfWkPr1oyIFvQWrBDBm.jpg",
-                year: 2011,
-                synopsis: "The Norse god Thor is banished to Earth to learn humility.",
-                seasons: [{ label: "Watch", url: "#" }],
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/john-wick-chapter-4-2023-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2023,
+                synopsis: "With the price on his head ever increasing, John Wick uncovers a path to defeating The High Table.",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/13649" }],
             },
             {
                 title: "Captain America: The First Avenger",
@@ -870,12 +914,12 @@
                 seasons: [{ label: "Download 720p", url: "https://mvlink.site/18434" }],
             },
             {
-                title: "Doctor Strange",
-                category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/uGBVj3bEbCoZbDjjl9wTxcygko.jpg",
-                year: 2016,
-                synopsis: "A surgeon becomes a powerful sorcerer to protect reality.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "A minecraft movie",
+                category: "Adventure",
+                img: "https://joshmovies.com/wp-content/uploads/2025/05/yFHHfHcUgGAxziP1C3lLt0q2T4s-740x1110.jpg",
+                year: 2025,
+                synopsis: "Four misfits find themselves struggling with ordinary problems when they are suddenly pulled through a mysterious portal into the Overworld: a bizarre, cubic wonderland that thrives on imagination.",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/26609" }],
             },
             {
                 title: "Alienoid",
@@ -942,12 +986,12 @@
                 seasons: [{ label: "Watch", url: "#" }],
             },
             {
-                title: "Mad Max: Fury Road",
-                category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/8tZYtuWezjS8Ud0Z3WbbF3qR3.jpg",
-                year: 2015,
-                synopsis: "In a post-apocalyptic wasteland, a drifter and a rebel fight for survival.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "Moana 2",
+                category: "Animation",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/aLVkiINlIeCkcZIzb7XHzPYgO6L-740x1110.jpg",
+                year: 2024,
+                synopsis: "fter receiving an unexpected call from her wayfinding ancestors, Moana journeys alongside Maui and a new crew to the far seas of Oceania and into dangerous, ",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/25409" }],
             },
             {
                 title: "The beekeeper",
@@ -966,44 +1010,44 @@
                 seasons: [{ label: "Download 1080p", url: "https://mvlink.site/26683" }],
             },
             {
-                title: "The Departed",
-                category: "Crime",
-                img: "https://image.tmdb.org/t/p/w500/nT97ifVT2J8J3Go86b1jzkL2W6.jpg",
-                year: 2006,
-                synopsis: "An undercover cop and a mole in the police navigate a dangerous game.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "Mufasa",
+                category: "Animation",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/lurEK87kukWNaHd0zYnsi3yzJrs-740x1110.jpg",
+                year: 2024,
+                synopsis: "Mufasa, a cub lost and alone, meets a sympathetic lion named Taka, the heir to a royal bloodline",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/25033" }],
             },
             {
-                title: "Blade Runner 2049",
-                category: "Sci-Fi",
-                img: "https://image.tmdb.org/t/p/w500/gajva3cN7j8U0r2wo3xqf7US.jpg",
-                year: 2017,
-                synopsis: "A young blade runner uncovers a secret that threatens society.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "Into the wild",
+                category: "Adventure",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/jnLnLYP5pGDfri04gxtAqAvkHMw-740x1110.jpg",
+                year: 2007,
+                synopsis: "After graduating from Emory University in 1992, top student and athlete Christopher McCandless abandons his possessions, gives his entire $24,000 savings account to charity, and hitchhikes to Alaska to live in the wilderness.",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/23118" }],
             },
             {
-                title: "The Lord of the Rings: The Fellowship of the Ring",
+                title: "Venom:the last dance",
+                category: "Action",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/vGXptEdgZIhPg3cGlc7e8sNPC2e-740x1110.jpg",
+                year: 2024,
+                synopsis: "",
+                seasons: [{ label: "Download hd", url: "https://mvlink.sit/23616" }],
+            },
+            {
+                title: "Dune part 2",
                 category: "Fantasy",
-                img: "https://image.tmdb.org/t/p/w500/6oom5QYq0W4l2Rj4g3.jpg",
-                year: 2001,
-                synopsis: "A hobbit embarks on a quest to destroy a powerful ring.",
-                seasons: [{ label: "Watch", url: "#" }],
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/dune-part-two-2024-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2024,
+                synopsis: "",
+                seasons: [{ label: "Download", url: "https://mvlink.site/19364" }],
             },
             {
-                title: "The Lord of the Rings: The Two Towers",
-                category: "Fantasy",
-                img: "https://image.tmdb.org/t/p/w500/5VTN0pR8gc2z4c2.jpg",
-                year: 2002,
-                synopsis: "Frodo and Sam continue their journey as the fellowship faces new challenges.",
-                seasons: [{ label: "Watch", url: "#" }],
-            },
-            {
-                title: "Star Wars: Episode IV - A New Hope",
-                category: "Sci-Fi",
-                img: "https://image.tmdb.org/t/p/w500/6FfCtAuVAW8XJjZ7.jpg",
-                year: 1977,
-                synopsis: "A young farmer joins the rebellion to fight an evil empire.",
-                seasons: [{ label: "Watch", url: "#" }],
+                title: "Kung fu panda 4",
+                category: "Animantion",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/kung-fu-panda-4-2024-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2024,
+                synopsis: "",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/22767" }],
             },
             {
                 title: "The free fall",
@@ -1014,12 +1058,12 @@
                 seasons: [{ label: "Download 720p", url: "https://mvlink.site/10518" }],
             },
             {
-                title: "Dune",
-                category: "Sci-Fi",
-                img: "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
-                year: 2021,
-                synopsis: "A noble family battles for control of the desert planet Arrakis.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/dune-2021" }],
+                title: "Strays",
+                category: "Comedy",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/strays-2023-dual-audio-hindi-english-480p-720p-1080p-1-740x1110.jpg",
+                year: 2023,
+                synopsis: "When Reggie is abandoned on the mean city streets by his lowlife owner, Doug, Reggie is certain that his beloved owner would never leave him on purpose. But once Reggie falls in with Bug, a fast-talking, ",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/18344" }],
             },
             {
                 title: "Parasite",
@@ -1038,12 +1082,12 @@
                 seasons: [{ label: "Watch", url: "https://example.com/watch/social-network-2010" }],
             },
             {
-                title: "Knives Out",
-                category: "Mystery",
-                img: "https://image.tmdb.org/t/p/w500/pThyQovXQrw2m0s9x82twj48Jq4.jpg",
-                year: 2019,
-                synopsis: "A detective investigates the death of a wealthy patriarch.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/knives-out-2019" }],
+                title: "Gran turismo",
+                category: "Thriller",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/gran-turismo-2023-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2023,
+                synopsis: "win or die",
+                seasons: [{ label: "Download hd", url: "https://mvlink.site/15647" }],
             },
             {
                 title: "Inglourious Basterds",
@@ -1405,6 +1449,22 @@
                 year: 2024,
                 synopsis: "A mild-mannered professor moonlighting as a fake hit man in police stings ignites a chain reaction of trouble when he falls for a potential client.",
                 seasons: [{ label: "Download 720p ", url: "https://mvlink.site/19861" }],
+            },
+            {  
+                title: "The Exorcists",
+                category: "Horror",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/zddK1YMeZrVKAEd33YdDUrTzZ4L-740x1110.jpg",
+                year: 2023,
+                synopsis: "When his child is possessed by an unrelenting evil, a father hires three expert exorcists to purge the demon and save his family. But this demon is merely the gatekeeper to a true hellion that will be unleashed on earth if the trio of exorcists fail.",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/25878" }],
+            },
+            {
+                title: "The Gorge",
+                category: "Romance",
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/7iMBZzVZtG0oBug4TfqDb9ZxAOa-740x1110.jpg",
+                year: 2025,
+                synopsis: "Two highly trained operatives grow close from a distance after being sent to guard opposite sides of a mysterious gorge. When an evil below emerges, they must work together to survive what lies within.",
+                seasons: [{ label: "Download 720p", url: "https://mvlink.site/24917" }],
             },
         ];
 
