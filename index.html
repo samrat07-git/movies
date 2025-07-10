@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,8 +8,6 @@
     <meta name="keywords" content="movies, movie gallery, films, watch movies, Samart's Gallery" />
     <title>Samart's Gallery - Top Famous Movies</title>
     <style>
-    <script async src="script.js"></script>
-
         :root {
             --bg: #fff;
             --text: #222;
@@ -35,9 +34,6 @@
             background: var(--card-bg);
             padding: 12px 16px;
             box-shadow: 0 1px 4px var(--card-shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1001;
             background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('https://images.unsplash.com/photo-1598899134739-9b5859230d8c?auto=format&fit=crop&w=1200');
             background-size: cover;
             background-position: center;
@@ -115,6 +111,21 @@
             background: var(--accent);
             color: #fff;
         }
+        .refresh-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            background: var(--accent);
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-left: 8px;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .refresh-btn:hover {
+            background: #c50811;
+            transform: translateY(-2px);
+        }
         .sort-select {
             padding: 6px 12px;
             border: 1px solid #ccc;
@@ -130,9 +141,6 @@
             background: var(--card-bg);
             padding: 8px 12px;
             border-bottom: 1px solid #eee;
-            position: sticky;
-            z-index: 1000;
-            transition: transform 0.3s, opacity 0.3s;
             scrollbar-width: thin;
             scrollbar-color: var(--accent) var(--card-bg);
         }
@@ -142,10 +150,6 @@
         .category-bar::-webkit-scrollbar-thumb {
             background: var(--accent);
             border-radius: 10px;
-        }
-        .category-bar.hidden {
-            transform: translateY(-100%);
-            opacity: 0;
         }
         .category-btn {
             background: none;
@@ -168,14 +172,16 @@
             color: #fff;
             box-shadow: 0 2px 4px var(--card-shadow);
         }
+        .content-wrapper {
+            margin-top: 20px;
+        }
         .movies-container {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            padding: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 15px;
             max-width: 1200px;
             margin: 0 auto;
-            margin-top: 16px;
             min-height: 500px;
         }
         .movie-card {
@@ -185,7 +191,7 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: box-shadow 0.3s, transform 0.3s;
+            transition: box-shadow 0.3s;
             opacity: 0;
             transform: translateY(50px);
             will-change: opacity, transform;
@@ -198,11 +204,10 @@
         }
         .movie-card:hover {
             box-shadow: 0 6px 24px var(--card-shadow);
-            transform: scale(1.05);
         }
         .movie-poster {
             position: relative;
-            padding-top: 56.25%; /* 16:9 aspect ratio */
+            padding-top: 56.25%;
         }
         .movie-poster img {
             position: absolute;
@@ -224,33 +229,33 @@
             font-size: 0.9em;
         }
         .movie-description {
-            padding: 16px;
+            padding: 12px;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
         .movie-description strong {
-            font-size: 1.1em;
-            margin-bottom: 8px;
+            font-size: 1em;
+            margin-bottom: 6px;
             color: var(--accent);
         }
         .movie-description p {
-            font-size: 0.9em;
+            font-size: 0.8em;
             color: var(--text);
-            margin: 0 0 8px;
-            line-height: 1.4;
+            margin: 0 0 6px;
+            line-height: 1.3;
         }
         .season-link {
             display: block;
-            margin: 4px 0;
-            padding: 7px 10px;
+            margin: 3px 0;
+            padding: 6px 8px;
             background: #f8f9fa;
-            border-radius: 7px;
+            border-radius: 5px;
             text-decoration: none;
             color: var(--accent);
             font-weight: 500;
             transition: background 0.2s, color 0.2s;
-            font-size: 0.97em;
+            font-size: 0.85em;
             border: 1px solid #eee;
         }
         .season-link:hover {
@@ -367,40 +372,117 @@
             background: var(--card-bg);
             border-top: 1px solid #eee;
         }
-        @media (max-width: 900px) {
-            .movies-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .bulb {
+            font-size: 3em;
+            transition: text-shadow 0.3s ease;
         }
-        @media (max-width: 600px) {
+        .bulb:hover {
+            text-shadow: 0 0 20px yellow;
+        }
+        .liquid-text {
+            font-size: 3em;
+            background: url('https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif') repeat;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stitched {
+            border: 2px dashed #333;
+            padding: 20px;
+            background: #f9f9f9;
+            font-family: monospace;
+        }
+        .pulse {
+            width: 100px;
+            height: 100px;
+            border: 5px solid red;
+            border-radius: 50%;
+            animation: pulse-animation 2s infinite;
+            margin: 20px auto;
+        }
+        @keyframes pulse-animation {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        @keyframes explode { 
+            0% { transform: scale(1); } 
+            100% { transform: scale(1.5) rotate(20deg); color: red; } 
+        }
+        
+        /* Mobile optimizations - always 2 columns */
+        @media (max-width: 768px) {
             .header {
                 flex-direction: column;
                 align-items: stretch;
-                gap: 10px;
+                gap: 8px;
+                padding: 8px 10px;
             }
             .search-bar {
                 max-width: 100%;
-                margin: 8px 0;
+                margin: 6px 0;
+                font-size: 0.9em;
+            }
+            .theme-picker {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 4px;
+            }
+            .theme-btn {
+                width: 20px;
+                height: 20px;
+            }
+            .refresh-btn, .theme-toggle {
+                font-size: 0.8em;
+                padding: 6px 10px;
+            }
+            .category-bar {
+                padding: 6px 8px;
+            }
+            .category-btn {
+                padding: 4px 8px;
+                font-size: 0.8em;
             }
             .movies-container {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
+                gap: 10px;
                 padding: 10px;
             }
             .movie-poster {
-                padding-top: 150%; /* 2:3 portrait aspect ratio for mobile */
+                padding-top: 140%;
             }
-            .movie-poster img {
-                height: 100%;
+            .movie-description {
+                padding: 8px;
+            }
+            .movie-description strong {
+                font-size: 0.9em;
+            }
+            .movie-description p {
+                font-size: 0.75em;
+            }
+            .season-link {
+                font-size: 0.75em;
+                padding: 4px 6px;
             }
         }
-        @media (max-width: 400px) {
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 6px 8px;
+            }
             .movies-container {
-                grid-template-columns: 1fr;
-                gap: 16px;
-                padding: 16px;
+                gap: 8px;
+                padding: 8px;
+            }
+            .movie-description {
+                padding: 6px;
+            }
+            .bulb {
+                font-size: 2em;
+            }
+            .liquid-text {
+                font-size: 2em;
             }
         }
+        
         /* Themes */
         .theme-light {
             --bg: #fff;
@@ -464,30 +546,15 @@
 </head>
 <body>
     <header class="header">
-
-    <style>
-    .bulb {
-        font-size: 3em;
-        transition: text-shadow 0.3s ease;
-    }
-
-    .bulb:hover {
-        text-shadow: 0 0 20px yellow;
-    }
-</style>
-
-<div class="bulb">💡</div>
-</style>
-
-<h1 class="fire-text">�HD movies</h1>
-
-     <a href="https://samrat07-git.github.io/Stuffs/" style="display:flex;align-items:center;border:1px solid #ccc;border-radius:10px;padding:10px;text-decoration:none;color:#333;font-family:sans-serif;width:300px;">
-    <img src="https://preview.redd.it/world-war-ii-if-it-was-fought-by-cats-v0-xu2afvux217b1.jpg?width=640&crop=smart&auto=webp&s=239c39fe4844d6394ef1c48072b8934c3e71ad2f" alt="Thumbnail" style="width:80px;height:80px;border-radius:8px;margin-right:10px;">
-    <div>
-        <div style="font-weight:bold;margin-bottom:4px;">Samrat.sr</div>
-        <div style="font-size:0.9em;color:#555;">connected link.</div>
-    </div>
-</a>
+        <div class="bulb">💡</div>
+        <h1 class="liquid-text">samrat.sr</h1>
+        <a href="https://samrat07-git.github.io/Stuffs/" style="display:flex;align-items:center;border:1px solid #ccc;border-radius:10px;padding:8px;text-decoration:none;color:#333;font-family:sans-serif;max-width:250px;">
+            <img src="https://preview.redd.it/world-war-ii-if-it-was-fought-by-cats-v0-xu2afvux217b1.jpg?width=640&crop=smart&auto=webp&s=239c39fe4844d6394ef1c48072b8934c3e71ad2f" alt="Thumbnail" style="width:60px;height:60px;border-radius:6px;margin-right:8px;">
+            <div>
+                <div style="font-weight:bold;margin-bottom:2px;font-size:0.9em;">Samrat.sr</div>
+                <div style="font-size:0.8em;color:#555;">connected link.</div>
+            </div>
+        </a>
         <input id="searchBar" class="search-bar" type="text" placeholder="Search movies..." aria-label="Search movies" />
         <div class="theme-picker" aria-label="Theme picker">
             <button class="theme-btn selected" style="background: #fff; border: 1px solid #ccc" title="Light" data-theme="theme-light" aria-label="Light theme"></button>
@@ -496,78 +563,48 @@
             <button class="theme-btn" style="background: #bbdefb" title="Blue" data-theme="theme-blue" aria-label="Blue theme"></button>
             <button class="theme-btn" style="background: #fce4ec" title="Rose" data-theme="theme-rose" aria-label="Rose theme"></button>
             <button class="theme-btn" style="background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff)" title="RGB Lightning" data-theme="theme-rgb-lightning" aria-label="RGB Lightning theme"></button>
-            <button class="theme-toggle" id="themeToggle">Enable Auto Theme</button>
+            <button class="theme-toggle" id="themeToggle">Auto Theme</button>
         </div>
-
         <select id="sortSelect" aria-label="Sort movies">
             <option value="title">Sort by Title</option>
-
             <option value="category">Sort by Category</option>
         </select>
+        <button class="refresh-btn" id="refreshBtn">🔄 Refresh</button>
     </header>
-      <style>
-    .liquid-text {
-        font-size: 3em;
-        background: url('https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif') repeat;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-</style>
 
-<h1 class="liquid-text">samrat.sr</h1>
-
-
-
-</style>
     <nav class="category-bar" id="categoryBar" role="navigation"></nav>
-    <main class="movies-container" id="moviesContainer"></main>
-    <div class="pagination" id="paginationBar" role="navigation"></div>
-    <div class="loading" id="loading" style="display: none;">Loading...</div>
-    <div style="background: #fff8dc; border-left: 5px solid gold; padding: 12px 16px; border-radius: 6px; font-family: sans-serif; color: #333; max-width: 400px;">
-    <strong style="color: goldenrod;">💡 Instructions:</strong>
-    <p style="margin: 8px 0 0 0; font-size: 0.95em;">
-        Click the download button below to download movies ,only 720p 10 bits color is provided . Make sure your internet connection is stable for the best experience.
-    </p>
-</div>
-    <div class="marquee" aria-hidden="true">00101010101001100101101110101001010110101010100101010101001010111001010101010010101010101010101010101011101000101011110101001011</div>
+
+    <div class="content-wrapper">
+        <main class="movies-container" id="moviesContainer"></main>
+        <div class="pagination" id="paginationBar" role="navigation"></div>
+        <div class="loading" id="loading" style="display: none;">Loading...</div>
+
+        <div style="background: #fff8dc; border-left: 5px solid gold; padding: 12px 16px; border-radius: 6px; font-family: sans-serif; color: #333; max-width: 400px; margin: 20px auto;">
+            <strong style="color: goldenrod;">💡 Instructions:</strong>
+            <p style="margin: 8px 0 0 0; font-size: 0.95em;">
+                Click the download button below to download movies, only 720p 10 bits color is provided. Make sure your internet connection is stable for the best experience.
+            </p>
+        </div>
+
+        <div class="marquee" aria-hidden="true">00101010101001100101101110101001010110101010100101010101001010111001010101010010101010101010101010101011101000101011110101001011</div>
+
+        <span style="animation: explode 0.3s ease-in-out infinite alternate; font-size: 1.5em;">💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣</span>
+
+        <div class="stitched">mobile view is optimized for 2 columns</div>
+        <div class="pulse"></div>
+    </div>
+
     <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
     <div class="image-modal" id="imageModal">
         <span class="image-modal-close" id="imageModalClose">×</span>
         <img id="modalImage" src="" alt="Full movie poster" />
     </div>
-    <span style="animation: explode 0.3s ease-in-out infinite alternate; font-size: 1.5em;">💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣</span>
-<style>@keyframes explode { 0% { transform: scale(1); } 100% { transform: scale(1.5) rotate(20deg); color: red; } }</style>
+
     <footer>© 2025 Samart's Gallery. All rights reserved.</footer>
-     <style>
-    .stitched {
-        border: 2px dashed #333;
-        padding: 20px;
-        background: #f9f9f9;
-        font-family: monospace;
-    }
-</style>
 
-<div class="stitched">mobile view is not optimised,may cause lag</div>!</div>
-<style>
-    .pulse {
-        width: 100px;
-        height: 100px;
-        border: 5px solid red;
-        border-radius: 50%;
-        animation: pulse 2s infinite;
-        margin: 20px auto;
-    }
-
-    @keyframes pulse {
-        0% { transform: scale(1); opacity: 1; }
-        100% { transform: scale(1.5); opacity: 0; }
-    }
-</style>
-
-<div class="pulse"></div>
     <script>
-
-        // Simulated movies.json data (unchanged as per request)
+        // Simulated movies.json data
         const movies = [
             {
                 title: "Interstellar",
@@ -670,7 +707,7 @@
                 category: "Animation",
                 img: "https://joshmovies.com/wp-content/uploads/2025/07/your-name-2016-multi-audio-hindi-english-japanese-480p-720p-1080p-740x1110.jpg",
                 year: 2016,
-                synopsis: "High schoolers Mitsuha and Taki are complete strangers living separate lives. But one night, they suddenly switch places. Mitsuha wakes up in Taki’s body, and he in hers. ",
+                synopsis: "High schoolers Mitsuha and Taki are complete strangers living separate lives. But one night, they suddenly switch places. Mitsuha wakes up in Taki's body, and he in hers. ",
                 seasons: [{ label: "Download 1080p", url: "https://mvlink.site/18014" }],
             },
             {
@@ -686,7 +723,7 @@
                 category: "Thriller",
                 img: "https://joshmovies.com/wp-content/uploads/2025/06/gBenxR01Uy0Ev9RTIw6dVBPoyQU-740x1110.jpg",
                 year: 2025,
-                synopsis: "With his wife out sick, a struggling father brings home a lifelike AI, only to have his self-aware new help want everything her new family has to offer… Like the affection of her owner and she’ll kill to get it..",
+                synopsis: "With his wife out sick, a struggling father brings home a lifelike AI, only to have his self-aware new help want everything her new family has to offer… Like the affection of her owner and she'll kill to get it..",
                 seasons: [{ label: "Download hd", url: "https://mvlink.site/24912" }],
             },
             {
@@ -702,7 +739,7 @@
                 category: "War",
                 img: "https://joshmovies.com/wp-content/uploads/2025/06/1y3TG8N8zwwMxqh0qzdyDs3IyCq-740x1110.jpg",
                 year: 2024,
-                synopsis: "During the United States’ 2021 withdrawal from Afghanistan, a group of female soldiers posing as medical relief are sent back in to rescue a group of kidnapped teenagers caught between ISIS and the Taliban.",
+                synopsis: "During the United States' 2021 withdrawal from Afghanistan, a group of female soldiers posing as medical relief are sent back in to rescue a group of kidnapped teenagers caught between ISIS and the Taliban.",
                 seasons: [{ label: "Downoad hd", url: "https://mvlink.site/25396" }],
             },
             {
@@ -734,7 +771,7 @@
                 category: "Romance",
                 img: "https://joshmovies.com/wp-content/uploads/2025/06/after-everything-2023-english-480p-720p-1080p-740x1110.jpg",
                 year: 2023,
-                synopsis: "Besieged by writer’s block and the crushing breakup with Tessa, Hardin travels to Portugal in search of a woman he wronged in the past – and to find himself..",
+                synopsis: "Besieged by writer's block and the crushing breakup with Tessa, Hardin travels to Portugal in search of a woman he wronged in the past – and to find himself..",
                 seasons: [{ label: "Download 720", url: "https://mvlink.site/15794" }],
             },
             {
@@ -830,7 +867,7 @@
                 category: "Thriller",
                 img: "https://joshmovies.com/wp-content/uploads/2025/06/zPOOyw6HBb5Qo6uaWJ5UxrBR6Ll-740x1110.jpg",
                 year: 2024,
-                synopsis: "While struggling with his dual identity, Arthur Fleck not only stumbles upon true love, but also finds the music that’s always been inside him.",
+                synopsis: "While struggling with his dual identity, Arthur Fleck not only stumbles upon true love, but also finds the music that's always been inside him.",
                 seasons: [{ label: "Watch", url: "https://mvlink.site/22793" }],
             },
             {
@@ -854,7 +891,7 @@
                 category: "Thriller",
                 img: "https://joshmovies.com/wp-content/uploads/2025/06/qmND84lMjMx32E40LID5f7WJB7u-740x1110.jpg",
                 year: 2018,
-                synopsis: "Left alone to clean up a 6-meter-deep deserted pool, Day falls asleep on an inflatable raft. When he wakes, the water level has sunk so low that he can’t climb out on his own.",
+                synopsis: "Left alone to clean up a 6-meter-deep deserted pool, Day falls asleep on an inflatable raft. When he wakes, the water level has sunk so low that he can't climb out on his own.",
                 seasons: [{ label: "Download hd", url: "https://mvlink.site/22451" }],
             },
             {
@@ -870,7 +907,7 @@
                 category: "Fantasy",
                 img: "https://joshmovies.com/wp-content/uploads/2025/06/gKkl37BQuKTanygYQG1pyYgLVgf-740x1110.jpg",
                 year: 2024,
-                synopsis: "Several generations following Caesar’s reign, apes – now the dominant species – live harmoniously while humans have been reduced to living in the shadows..",
+                synopsis: "Several generations following Caesar's reign, apes – now the dominant species – live harmoniously while humans have been reduced to living in the shadows..",
                 seasons: [{ label: "Download hd", url: "https://mvlink.site/21118" }],
             },
             {
@@ -878,7 +915,7 @@
                 category: "Thriller",
                 img: "https://joshmovies.com/wp-content/uploads/2025/06/se7en-1995-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
                 year: 1995,
-                synopsis: "Two homicide detectives are on a desperate hunt for a serial killer whose crimes are based on the “seven deadly sins” in this dark and haunting film that takes viewers from the tortured remains of one victim to the next.",
+                synopsis: "Two homicide detectives are on a desperate hunt for a serial killer whose crimes are based on the \"seven deadly sins\" in this dark and haunting film that takes viewers from the tortured remains of one victim to the next.",
                 seasons: [{ label: "Download hd", url: "https://mvlink.site/20524" }],
             },
             {
@@ -896,576 +933,7 @@
                 year: 2023,
                 synopsis: "When a small outpost is ambushed, a US Army squad must take the battle below ground on a high-stakes mission in a new type of warfare the likes of which they have never seen..",
                 seasons: [{ label: "Download hd", url: "https://mvlink.site/17240" }],
-            },
-            {
-                title: "john wick chapter 4",
-                category: "Action",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/john-wick-chapter-4-2023-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2023,
-                synopsis: "With the price on his head ever increasing, John Wick uncovers a path to defeating The High Table.",
-                seasons: [{ label: "Download hd", url: "https://mvlink.site/13649" }],
-            },
-            {
-                title: "Captain America: The First Avenger",
-                category: "Action",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/captain-america-the-first-avenger-2011-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2011,
-                synopsis: "A frail man becomes a super-soldier during World War II.",
-                seasons: [{ label: "Download 720p", url: "https://mvlink.site/18434" }],
-            },
-            {
-                title: "A minecraft movie",
-                category: "Adventure",
-                img: "https://joshmovies.com/wp-content/uploads/2025/05/yFHHfHcUgGAxziP1C3lLt0q2T4s-740x1110.jpg",
-                year: 2025,
-                synopsis: "Four misfits find themselves struggling with ordinary problems when they are suddenly pulled through a mysterious portal into the Overworld: a bizarre, cubic wonderland that thrives on imagination.",
-                seasons: [{ label: "Download hd", url: "https://mvlink.site/26609" }],
-            },
-            {
-                title: "Alienoid",
-                category: "Sci-Fi",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/alienoid-2022-multi-audio-hindi-english-korean-480p-720p-1080p-1-740x1110.jpg",
-                year: 2022,
-                synopsis: "sifi.",
-                seasons: [{ label: "720p", url: "https://mvlink.site/17604" }],
-            },
-            {
-                title: "World War Z",
-                category: "Action",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/world-war-z-2013-dual-audio-english-hindi-480p-720p-1080p-740x1110.jpg",
-                year: 2013,
-                synopsis: "zombie survive with family ",
-                seasons: [{ label: "Download ", url: "https://mvlink.site/15828" }],
-            },
-            {
-                title: "the last kingdom ",
-                category: "Adventure",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/the-last-kingdom-seven-kings-must-die-2023-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2023,
-                synopsis: "The Guardians unravel the mystery of Star-Lord's parentage.",
-                seasons: [{ label: "download ", url: "https://mvlink.site/12759" }],
-            },
-            {
-                title: "Captain Marvel",
-                category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/AtsgWhDnHTq68L0lLsUrCnM7Tj.jpg",
-                year: 2019,
-                synopsis: "A warrior discovers her true powers during an intergalactic conflict.",
-                seasons: [{ label: "Watch", url: "#" }],
-            },
-            {
-                title: "Avengers: Infinity War",
-                category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/7WsyCh68F0KTbLSDK0fP1ta5I.jpg",
-                year: 2018,
-                synopsis: "The Avengers fight to stop Thanos from collecting the Infinity Stones.",
-                seasons: [{ label: "Watch", url: "#" }],
-            },
-            {
-                title: "Downsizing",
-                category: "Action",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/everly-2014-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2017,
-                synopsis: "After she betrays a powerful mob boss, a woman matches wits and weaponry with a legion of killers who are out to collect the bounty on the heads of her and her family.",
-                seasons: [{ label: "Download  720", url: "https://mvlink.site/18940" }],
-            },
-            {
-                title: "Aporia",
-                category: "Action",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/aporia-2019-dual-audio-hindi-turkish-480p-720p-1080p-740x1046.jpg",
-                year: 2019,
-                synopsis: "in hindi",
-                seasons: [{ label: "Download 720", url: "https://mvlink.site/12298" }],
-            },
-            {
-                title: "The Wolf of Wall Street",
-                category: "Drama",
-                img: "https://image.tmdb.org/t/p/w500/pWHf4C7ZCSLh2me8dc6js0TGF3.jpg",
-                year: 2013,
-                synopsis: "A stockbroker rises to wealth through corruption and excess.",
-                seasons: [{ label: "Watch", url: "#" }],
-            },
-            {
-                title: "Moana 2",
-                category: "Animation",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/aLVkiINlIeCkcZIzb7XHzPYgO6L-740x1110.jpg",
-                year: 2024,
-                synopsis: "fter receiving an unexpected call from her wayfinding ancestors, Moana journeys alongside Maui and a new crew to the far seas of Oceania and into dangerous, ",
-                seasons: [{ label: "Download hd", url: "https://mvlink.site/25409" }],
-            },
-            {
-                title: "The beekeeper",
-                category: "Crime",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/the-beekeeper-2024-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2024,
-                synopsis: "One man’s campaign for vengeance takes on national stakes after he is revealed to be a former operative of a powerful and clandestine organization known as Beekeepers..",
-                seasons: [{ label: "Download ", url: "https://mvlink.site/17985" }],
-            },
-            {
-                title: "Caption america brave world",
-                category: "Action",
-                img: "https://joshmovies.com/wp-content/uploads/2025/05/4YFyYcUPfrbpj6VpgWh7xoUnwLA-740x1110.jpg",
-                year: 2025,
-                synopsis: "",
-                seasons: [{ label: "Download 1080p", url: "https://mvlink.site/26683" }],
-            },
-            {
-                title: "Mufasa",
-                category: "Animation",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/lurEK87kukWNaHd0zYnsi3yzJrs-740x1110.jpg",
-                year: 2024,
-                synopsis: "Mufasa, a cub lost and alone, meets a sympathetic lion named Taka, the heir to a royal bloodline",
-                seasons: [{ label: "Download hd", url: "https://mvlink.site/25033" }],
-            },
-            {
-                title: "Into the wild",
-                category: "Adventure",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/jnLnLYP5pGDfri04gxtAqAvkHMw-740x1110.jpg",
-                year: 2007,
-                synopsis: "After graduating from Emory University in 1992, top student and athlete Christopher McCandless abandons his possessions, gives his entire $24,000 savings account to charity, and hitchhikes to Alaska to live in the wilderness.",
-                seasons: [{ label: "Download hd", url: "https://mvlink.site/23118" }],
-            },
-            {
-                title: "Venom:the last dance",
-                category: "Action",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/vGXptEdgZIhPg3cGlc7e8sNPC2e-740x1110.jpg",
-                year: 2024,
-                synopsis: "",
-                seasons: [{ label: "Download hd", url: "https://mvlink.sit/23616" }],
-            },
-            {
-                title: "Dune part 2",
-                category: "Fantasy",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/dune-part-two-2024-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2024,
-                synopsis: "",
-                seasons: [{ label: "Download", url: "https://mvlink.site/19364" }],
-            },
-            {
-                title: "Kung fu panda 4",
-                category: "Animantion",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/kung-fu-panda-4-2024-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2024,
-                synopsis: "",
-                seasons: [{ label: "Download hd", url: "https://mvlink.site/22767" }],
-            },
-            {
-                title: "The free fall",
-                category: "Horror",
-                img: "https://joshmovies.com/wp-content/uploads/2025/07/the-free-fall-2022-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2022,
-                synopsis: "Sara wakes from a coma to a life she doesn’t remember; a fragile, slippery reality that spirals into a nightmare where nothing is as it seems",
-                seasons: [{ label: "Download 720p", url: "https://mvlink.site/10518" }],
-            },
-            {
-                title: "Strays",
-                category: "Comedy",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/strays-2023-dual-audio-hindi-english-480p-720p-1080p-1-740x1110.jpg",
-                year: 2023,
-                synopsis: "When Reggie is abandoned on the mean city streets by his lowlife owner, Doug, Reggie is certain that his beloved owner would never leave him on purpose. But once Reggie falls in with Bug, a fast-talking, ",
-                seasons: [{ label: "Download hd", url: "https://mvlink.site/18344" }],
-            },
-            {
-                title: "Parasite",
-                category: "Thriller",
-                img: "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
-                year: 2019,
-                synopsis: "A poor family schemes to infiltrate a wealthy household.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/parasite-2019" }],
-            },
-            {
-                title: "The Social Network",
-                category: "Drama",
-                img: "https://image.tmdb.org/t/p/w500/nxn2yL1T.jpg",
-                year: 2010,
-                synopsis: "The story of the founding of Facebook and its consequences.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/social-network-2010" }],
-            },
-            {
-                title: "Gran turismo",
-                category: "Thriller",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/gran-turismo-2023-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2023,
-                synopsis: "win or die",
-                seasons: [{ label: "Download hd", url: "https://mvlink.site/15647" }],
-            },
-            {
-                title: "Inglourious Basterds",
-                category: "War",
-                img: "https://image.tmdb.org/t/p/w500/7sfbEnaARXDDhKm0CZ7D7bBgVis.jpg",
-                year: 2009,
-                synopsis: "A group of soldiers plot to kill Nazi leaders during WWII.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/inglourious-basterds-2009" }],
-            },
-            {
-                title: "Django Unchained",
-                category: "Western",
-                img: "https://image.tmdb.org/t/p/w500/7oWY8UD0.jpg",
-                year: 2012,
-                synopsis: "A freed slave seeks to rescue his wife from a brutal plantation owner.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/django-unchained-2012" }],
-            },
-            {
-                title: "The Prestige",
-                category: "Thriller",
-                img: "https://image.tmdb.org/t/p/w500/tRNxZ8TTx.jpg",
-                year: 2006,
-                synopsis: "Two magicians engage in a bitter rivalry with tragic consequences.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/prestige-2006" }],
-            },
-            {
-                title: "No Country for Old Men",
-                category: "Thriller",
-                img: "https://image.tmdb.org/t/p/w500/bj1v6YKF8y.jpg",
-                year: 2007,
-                synopsis: "A hunter stumbles upon a drug deal gone wrong and faces a ruthless killer.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/no-country-2007" }],
-            },
-            {
-                title: "Whiplash",
-                category: "Drama",
-                img: "https://image.tmdb.org/t/p/w500/6uSP2f1m4.jpg",
-                year: 2014,
-                synopsis: "A young drummer faces an intense music instructor to achieve greatness.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/whiplash-2014" }],
-            },
-            {
-                title: "The Big Lebowski",
-                category: "Comedy",
-                img: "https://image.tmdb.org/t/p/w500/xc4bTXVw1.jpg",
-                year: 1998,
-                synopsis: "A slacker gets caught up in a kidnapping plot over a case of mistaken identity.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/big-lebowski-1998" }],
-            },
-            {
-                title: "Moonlight",
-                category: "Drama",
-                img: "https://image.tmdb.org/t/p/w500/491cCpOJ.jpg",
-                year: 2016,
-                synopsis: "A young man navigates his identity and life in a tough neighborhood.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/moonlight-2016" }],
-            },
-            {
-                title: "Her",
-                category: "Romance",
-                img: "https://image.tmdb.org/t/p/w500/eCOtq4V.jpg",
-                year: 2013,
-                synopsis: "A lonely writer falls in love with an AI operating system.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/her-2013" }],
-            },
-            {
-                title: "Get Out",
-                category: "Thriller",
-                img: "https://image.tmdb.org/t/p/w500/tFXIu.jpg",
-                year: 2017,
-                synopsis: "A young man uncovers a disturbing secret during a visit to his girlfriend's family.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/get-out-2017" }],
-            },
-            {
-                title: "The Shape of Water",
-                category: "Fantasy",
-                img: "https://image.tmdb.org/t/p/w500/9a2t.jpg",
-                year: 2017,
-                synopsis: "A mute woman forms a unique bond with an amphibious creature.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/shape-of-water-2017" }],
-            },
-            {
-                title: "Unknown killer robots",
-                category: "Documentary",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/unknown-killer-robots-2023-dual-audio-hindi-english-480p-720p-1080p-740x1111.jpg",
-                year: 2023,
-                synopsis: "What happens when a machine makes life-or-death decisions? This documentary explores the dangers of artificial intelligence in military application..",
-                seasons: [{ label: "Download 720p", url: "https://mvlink.site/14348" }],
-            },
-            {
-                title: "Jojo Rabbit",
-                category: "Comedy",
-                img: "https://image.tmdb.org/t/p/w500/7GsM.jpg",
-                year: 2019,
-                synopsis: "A young boy’s imaginary friend is Adolf Hitler during WWII.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/jojo-rabbit-2019" }],
-            },
-            {
-                title: "1917",
-                category: "War",
-                img: "https://musicart.xboxlive.com/7/d44e5100-0000-0000-0000-000000000002/504/image.jpg",
-                year: 2019,
-                synopsis: "Two soldiers undertake a perilous mission during World War I.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/1917-2019" }],
-            },
-            {
-                title: "The Irishman",
-                category: "Crime",
-                img: "https://image.tmdb.org/t/p/w500/mb.jpg",
-                year: 2019,
-                synopsis: "A hitman reflects on his life and involvement with the mob.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/irishman-2019" }],
-            },
-            {
-                title: "Once Upon a Time in Hollywood",
-                category: "Drama",
-                img: "https://image.tmdb.org/t/p/w500/8j.jpg",
-                year: 2019,
-                synopsis: "A fading actor and his stunt double navigate 1960s Hollywood.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/hollywood-2019" }],
-            },
-            {
-                title: "Memento",
-                category: "Thriller",
-                img: "https://image.tmdb.org/t/p/w500/yuNs.jpg",
-                year: 2000,
-                synopsis: "A man with memory loss searches for his wife’s killer.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/memento-2000" }],
-            },
-            {
-                title: "Eternal Sunshine of the Spotless Mind",
-                category: "Romance",
-                img: "https://image.tmdb.org/t/p/w500/5Mwk.jpg",
-                year: 2004,
-                synopsis: "A couple erases memories of each other but rediscovers their connection.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/eternal-sunshine-2004" }],
-            },
-            {
-                title: "peaky blinders",
-                category: "Action",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/peaky-blinders-season-1-5-dual-audio-hindi-english-with-subtitle-740x1110.jpg",
-                synopsis: "A gangster family epic set in 1919 Birmingham, England .",
-                seasons: [{ label: "season1", url: "https://mvlink.site/web/11924",}],
-                seasons: [{ label: "season1", url: "https://mvlink.site/web/12221",}],
-
-            },
-            {
-                title: "The Revenant",
-                category: "Adventure",
-                img: "https://image.tmdb.org/t/p/w500/oXU.jpg",
-                year: 2015,
-                synopsis: "A frontiersman seeks revenge after being left for dead.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/revenant-2015" }],
-            },
-            {
-                title: "Arrival",
-                category: "Sci-Fi",
-                img: "https://image.tmdb.org/t/p/w500/x2FJ.jpg",
-                year: 2016,
-                synopsis: "A linguist decodes an alien language to prevent global conflict.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/arrival-2016" }],
-            },
-            {
-                title: "Gone Girl",
-                category: "Thriller",
-                img: "https://image.tmdb.org/t/p/w500/qh.jpg",
-                year: 2014,
-                synopsis: "A woman’s disappearance sparks a media frenzy and dark secrets.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/gone-girl-2014" }],
-            },
-            {
-                title: "The Hateful Eight",
-                category: "Western",
-                img: "https://image.tmdb.org/t/p/w500/jI.jpg",
-                year: 2015,
-                synopsis: "A group of strangers are trapped in a cabin during a blizzard.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/hateful-eight-2015" }],
-            },
-            {
-                title: "Ex Machina",
-                category: "Sci-Fi",
-                img: "https://image.tmdb.org/t/p/w500/bm.jpg",
-                year: 2015,
-                synopsis: "A programmer tests an AI with human-like qualities.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/ex-machina-2015" }],
-            },
-            {
-                title: "Zootopia",
-                category: "Animation",
-                img: "https://image.tmdb.org/t/p/w500/sM.jpg",
-                year: 2016,
-                synopsis: "A rabbit cop and a fox con artist solve a mystery in a vibrant city.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/zootopia-2016" }],
-            },
-            {
-                title: "Moana",
-                category: "Animation",
-                img: "https://image.tmdb.org/t/p/w500/z4.jpg",
-                year: 2016,
-                synopsis: "A young girl sails across the ocean to save her people.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/moana-2016" }],
-            },
-            {
-                title: "Deadpool 2",
-                category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/qh.jpg",
-                year: 2018,
-                synopsis: "Deadpool forms a team to protect a young mutant from a time-traveling cyborg.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/deadpool-2-2018" }],
-            },
-            {
-                title: "Thor: Ragnarok",
-                category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/rz.jpg",
-                year: 2017,
-                synopsis: "Thor teams up with Loki and Hulk to save Asgard from destruction.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/thor-ragnarok-2017" }],
-            },
-            {
-                title: "Crouching Tiger, Hidden Dragon",
-                category: "Action",
-                img: "https://image.tmdb.org/t/p/w500/iND.jpg",
-                year: 2000,
-                synopsis: "A warrior seeks a stolen sword and a fugitive in ancient China.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/crouching-tiger-2000" }],
-            },
-            {
-                title: "Unknown cosmic time machine",
-                category: "Documentary",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/unknown-cosmic-time-machine-2023-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2023,
-                synopsis: "A unique behind-the-scenes access to NASA’s ambitious mission to launch the James Webb Space Telescope, following a team of engineers and scientists as they take the next giant leap in our quest to understand the universe.",
-                seasons: [{ label: "Downlaod 720p", url: "https://mvlink.site/14589" }],
-            },
-            {
-                title: "Youngs royals forever",
-                category: "Documentary",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/young-royals-forever-2024-multi-audio-hindi-english-swedish-480p-720p-1080p-740x1088.jpg",
-                year: 2024,
-                synopsis: "",
-                seasons: [{ label: "Download 720p", url: "https://mvlink.site/18977" }],
-            },
-            {
-                title: "Pan’s Labyrinth",
-                category: "Fantasy",
-                img: "https://image.tmdb.org/t/p/w500/2x.jpg",
-                year: 2006,
-                synopsis: "A girl escapes a brutal reality through a dark fairy tale world.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/pans-labyrinth-2006" }],
-            },
-            {
-                title: "The King’s Speech",
-                category: "Drama",
-                img: "https://image.tmdb.org/t/p/w500/y4.jpg",
-                year: 2010,
-                synopsis: "A king overcomes a stammer with the help of an unorthodox therapist.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/kings-speech-2010" }],
-            },
-            {
-                title: "inside the mind of a Dog",
-                category: "Documentary",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/rajrUCW4fkvdK4EDickfpK9wLbO-740x1110.jpg",
-                year: 2025,
-                synopsis: "Embark on a delightful journey into the world of dogs in this documentary that reveals scientific and emotional insights about our lovable BFFs.",
-                seasons: [{ label: "Download 720p", url: "https://mvlink.site/21277" }],
-            },
-            {
-                title: "Gravity",
-                category: "Sci-Fi",
-                img: "https://image.tmdb.org/t/p/w500/kZ.jpg",
-                year: 2013,
-                synopsis: "An astronaut fights to survive after a disaster in space.",
-                seasons: [{ label: "Watch", url: "https://example.com/watch/gravity-2013" }],
-            },
-            {
-                title: "12 strong",
-                category: "War",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/12-strong-2018-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2018,
-                synopsis: "A team of special forces head into Afghanistan in the aftermath of the September 11th attacks in an attempt to dismantle the Taliban..",
-                seasons: [{ label: "Downlaod 720p", url: "https://mvlink.site/14072" }],
-            },
-            {
-                title: "The idea of you ",
-                category: "Romance",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/the-idea-of-you-2024-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2024,
-                synopsis: "",
-                seasons: [{ label: "Download 720", url: "https://mvlink.site/20658" }],
-            },
-            {
-                title: "Lift",
-                category: "Comedy ",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/lift-2024-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2024,
-                synopsis: "An international heist crew, led by Cyrus Whitaker, race to lift $500 million in gold from a passenger plane at 40,000 feet.",
-                seasons: [{ label: "Download ", url: "https://mvlink.site/17652" }],
-            },
-            {
-                title: "My fault ",
-                category: "Romance",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/my-fault-2023-multi-audio-hindi-english-spanish-480p-720p-1080p-740x1110.jpg",
-                year: 2023,
-                synopsis: "As a proud and independent 17 year old, Noah resists living in a mansion surrounded by luxury.",
-                seasons: [{ label: "Download 720p ", url: "https://mvlink.site/13654" }],
-            },
-            {
-                title: "out of africa",
-                category: "Romance",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/out-of-africa-1985-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 1985,
-                synopsis: "The film is based on her 1937 autobiographical novel.",
-                seasons: [{ label: "Download 720p ", url: "https://mvlink.site/11883" }],
-            },
-            {
-                title: "the nutty professor ",
-                category: "Comedy",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/the-nutty-professor-1996-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 1996,
-                synopsis: "",
-                seasons: [{ label: "Download 720p ", url: "https://mvlink.site/11896" }],
-            },
-            {
-                title: "Friends with benifits",
-                category: "Romance",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/friends-with-benefits-2011-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2011,
-                synopsis: "",
-                seasons: [{ label: "Download 720p ", url: "https://mvlink.site/12067" }],
-            },
-            {
-                title: "No hard feeling",
-                category: "Romance",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/no-hard-feelings-2023-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2023,
-                synopsis: "",
-                seasons: [{ label: "Download 720p ", url: "https://mvlink.site/15238" }],
-            },
-            {
-                title: "Anyone but you",
-                category: "Romance",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/anyone-but-you-2023-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2023,
-                synopsis: "",
-                seasons: [{ label: "Download 720p ", url: "https://mvlink.site/18365" }],
-            },
-            {
-                title: "Challengers",
-                category: "Romance",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/challengers-2024-dual-audio-english-hindi-480p-720p-1080p-740x1110.jpg",
-                year: 2024,
-                synopsis: "",
-                seasons: [{ label: "Download 720p ", url: "https://mvlink.site/19673" }],
-            },
-            {
-                title: "Hitman",
-                category: "Romance",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/hit-man-2024-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
-                year: 2024,
-                synopsis: "A mild-mannered professor moonlighting as a fake hit man in police stings ignites a chain reaction of trouble when he falls for a potential client.",
-                seasons: [{ label: "Download 720p ", url: "https://mvlink.site/19861" }],
-            },
-            {  
-                title: "The Exorcists",
-                category: "Horror",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/zddK1YMeZrVKAEd33YdDUrTzZ4L-740x1110.jpg",
-                year: 2023,
-                synopsis: "When his child is possessed by an unrelenting evil, a father hires three expert exorcists to purge the demon and save his family. But this demon is merely the gatekeeper to a true hellion that will be unleashed on earth if the trio of exorcists fail.",
-                seasons: [{ label: "Download 720p", url: "https://mvlink.site/25878" }],
-            },
-            {
-                title: "The Gorge",
-                category: "Romance",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/7iMBZzVZtG0oBug4TfqDb9ZxAOa-740x1110.jpg",
-                year: 2025,
-                synopsis: "Two highly trained operatives grow close from a distance after being sent to guard opposite sides of a mysterious gorge. When an evil below emerges, they must work together to survive what lies within.",
-                seasons: [{ label: "Download 720p", url: "https://mvlink.site/24917" }],
-            },
+            }
         ];
 
         // Pagination settings
@@ -1487,6 +955,7 @@
         const imageModal = document.getElementById("imageModal");
         const modalImage = document.getElementById("modalImage");
         const modalClose = document.getElementById("imageModalClose");
+        const refreshBtn = document.getElementById("refreshBtn");
 
         // Render category buttons
         if (categoryBar) {
@@ -1504,16 +973,6 @@
                 categoryBar.appendChild(btn);
             });
         }
-
-        // Set dynamic top position for category bar
-        function updateCategoryBarPosition() {
-            if (categoryBar && document.querySelector(".header")) {
-                const headerHeight = document.querySelector(".header").offsetHeight;
-                categoryBar.style.top = `${headerHeight}px`;
-            }
-        }
-        window.addEventListener("resize", updateCategoryBarPosition);
-        updateCategoryBarPosition();
 
         // Intersection Observer for scroll animations
         const observer = new IntersectionObserver(
@@ -1542,192 +1001,220 @@
                     <div class="movie-poster" style="background: #eee;"></div>
                     <div class="movie-description">
                         <div style="background: #eee; height: 20px; margin-bottom: 8px;"></div>
-                        <div style="background: #eee; height: 40px;"></div>
+                    <div style="background: #eee; height: 40px;"></div>
                     </div>
                 `;
                 moviesContainer.appendChild(skeleton);
             }
 
             setTimeout(() => {
-    try {
-        const filtered = movies.filter(
-            m =>
-                (filterCat === "All" || m.category === filterCat) &&
-                m.title.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+                try {
+                    const filtered = movies.filter(
+                        m =>
+                            (filterCat === "All" || m.category === filterCat) &&
+                            m.title.toLowerCase().includes(searchTerm.toLowerCase())
+                    );
 
-        const sorted = [...filtered].sort((a, b) => {
-            const sortBy = sortSelect?.value || "title";
-            return a[sortBy].localeCompare(b[sortBy]);
-        });
+                    const sorted = [...filtered].sort((a, b) => {
+                        const sortBy = sortSelect?.value || "title";
+                        return a[sortBy].localeCompare(b[sortBy]);
+                    });
 
-        const pageCount = Math.ceil(sorted.length / MOVIES_PER_PAGE);
-        currentPage = Math.min(currentPage, pageCount || 1);
+                    const pageCount = Math.ceil(sorted.length / MOVIES_PER_PAGE);
+                    currentPage = Math.min(currentPage, pageCount || 1);
 
-        const start = (currentPage - 1) * MOVIES_PER_PAGE;
-        const end = start + MOVIES_PER_PAGE;
-        const paginated = sorted.slice(start, end);
+                    const start = (currentPage - 1) * MOVIES_PER_PAGE;
+                    const end = start + MOVIES_PER_PAGE;
+                    const paginated = sorted.slice(start, end);
 
-        moviesContainer.innerHTML = "";
-        if (paginated.length === 0) {
-            moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;">No movies found.</div>`;
-        } else {
-            paginated.forEach(movie => {
-                const card = document.createElement("div");
-                card.className = "movie-card";
-                card.setAttribute("aria-label", `Movie: ${movie.title}, ${movie.category}, ${movie.year}`);
-                card.innerHTML = `
-                    <div class="movie-poster">
-                        <img src="${movie.img}" alt="${movie.title} poster" onerror="this.src='https://via.placeholder.com/150x84?text=Image+Not+Found';this.classList.add('error');" loading="lazy" decoding="async">
-                    </div>
-                    <div class="movie-description">
-                        <strong>${movie.title} (${movie.year})</strong>
-                        <p><strong>Category:</strong> ${movie.category}</p>
-                        <p>${movie.synopsis || "No synopsis available."}</p>
-                        ${movie.seasons.map(s => `<a href="${s.url}" class="season-link" target="_blank" rel="noopener noreferrer">${s.label}</a>`).join("")}
-                    </div>
-                `;
-                moviesContainer.appendChild(card);
-                observer.observe(card);
-                card.querySelector("img").addEventListener("click", () => {
-                    modalImage.src = movie.img;
-                    modalImage.alt = `${movie.title} full poster`;
-                    imageModal.style.display = "flex";
-                });
-            });
+                    moviesContainer.innerHTML = "";
+                    if (paginated.length === 0) {
+                        moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;">No movies found.</div>`;
+                    } else {
+                        paginated.forEach(movie => {
+                            const card = document.createElement("div");
+                            card.className = "movie-card";
+                            card.setAttribute("aria-label", `Movie: ${movie.title}, ${movie.category}, ${movie.year}`);
+                            card.innerHTML = `
+                                <div class="movie-poster">
+                                    <img src="${movie.img}" alt="${movie.title} poster" onerror="this.src='https://via.placeholder.com/150x84?text=Image+Not+Found';this.classList.add('error');" loading="lazy" decoding="async">
+                                </div>
+                                <div class="movie-description">
+                                    <strong>${movie.title} (${movie.year})</strong>
+                                    <p><strong>Category:</strong> ${movie.category}</p>
+                                    <p>${movie.synopsis || "No synopsis available."}</p>
+                                    ${movie.seasons.map(s => `<a href="${s.url}" class="season-link" target="_blank" rel="noopener noreferrer">${s.label}</a>`).join("")}
+                                </div>
+                            `;
+                            moviesContainer.appendChild(card);
+                            observer.observe(card);
+                            card.querySelector("img").addEventListener("click", () => {
+                                modalImage.src = movie.img;
+                                modalImage.alt = `${movie.title} full poster`;
+                                imageModal.style.display = "flex";
+                            });
+                        });
+                    }
+
+                    paginationBar.innerHTML = `
+                        <button id="prevBtn" ${currentPage === 1 ? "disabled aria-disabled='true'" : ""} aria-label="Previous page">Previous</button>
+                        <span>Page ${currentPage} of ${pageCount || 1}</span>
+                        <button id="nextBtn" ${currentPage === pageCount ? "disabled aria-disabled='true'" : ""} aria-label="Next page">Next</button>
+                    `;
+
+                    document.getElementById("prevBtn")?.addEventListener("click", () => {
+                        if (currentPage > 1) {
+                            currentPage--;
+                            renderMovies(filterCat, searchTerm);
+                        }
+                    });
+                    document.getElementById("nextBtn")?.addEventListener("click", () => {
+                        if (currentPage < pageCount) {
+                            currentPage++;
+                            renderMovies(filterCat, searchTerm);
+                        }
+                    });
+
+                    loading.style.display = "none";
+                } catch (error) {
+                    console.error("Error rendering movies:", error);
+                    moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;">Error loading movies.</div>`;
+                    loading.style.display = "none";
+                }
+            }, 300);
         }
 
-        paginationBar.innerHTML = `
-            <button id="prevBtn" ${currentPage === 1 ? "disabled aria-disabled='true'" : ""} aria-label="Previous page">Previous</button>
-            <span>Page ${currentPage} of ${pageCount || 1}</span>
-            <button id="nextBtn" ${currentPage === pageCount ? "disabled aria-disabled='true'" : ""} aria-label="Next page">Next</button>
-        `;
-
-        document.getElementById("prevBtn")?.addEventListener("click", () => {
-            if (currentPage > 1) {
-                currentPage--;
-                renderMovies(filterCat, searchTerm);
-            }
-        });
-        document.getElementById("nextBtn")?.addEventListener("click", () => {
-            if (currentPage < pageCount) {
-                currentPage++;
-                renderMovies(filterCat, searchTerm);
-            }
+        // Debounced search
+        let searchTimeout;
+        searchBar?.addEventListener("input", () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                currentPage = 1;
+                renderMovies(
+                    document.querySelector(".category-btn.active")?.textContent || "All",
+                    searchBar.value.trim()
+                );
+            }, 200);
         });
 
-        loading.style.display = "none";
-    } catch (error) {
-        console.error("Error rendering movies:", error);
-        moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;">Error loading movies.</div>`;
-        loading.style.display = "none";
-    }
-}, 300);
-}
+        // Sort change
+        sortSelect?.addEventListener("change", () => {
+            currentPage = 1;
+            renderMovies(
+                document.querySelector(".category-btn.active")?.textContent || "All",
+                searchBar?.value.trim() || ""
+            );
+        });
 
-// Debounced search
-let searchTimeout;
-searchBar?.addEventListener("input", () => {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(() => {
-        currentPage = 1;
-        renderMovies(
-            document.querySelector(".category-btn.active")?.textContent || "All",
-            searchBar.value.trim()
-        );
-    }, 200);
-});
+        // Refresh button functionality - shuffles movies and resets everything
+        refreshBtn?.addEventListener("click", () => {
+            // Shuffle movies array
+            for (let i = movies.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [movies[i], movies[j]] = [movies[j], movies[i]];
+            }
 
-// Sort change
-sortSelect?.addEventListener("change", () => {
-    currentPage = 1;
-    renderMovies(
-        document.querySelector(".category-btn.active")?.textContent || "All",
-        searchBar?.value.trim() || ""
-    );
-});
+            // Reset to default state
+            currentPage = 1;
+            if (searchBar) searchBar.value = "";
+            if (sortSelect) sortSelect.value = "title";
+            document.querySelectorAll(".category-btn").forEach(btn => {
+                btn.classList.remove("active");
+                if (btn.textContent === "All") {
+                    btn.classList.add("active");
+                }
+            });
 
-// Theme handling
-const themes = ["theme-light", "theme-dark", "theme-neon", "theme-blue", "theme-rose", "theme-rgb-lightning"];
-let currentThemeIndex = 0;
-let autoSwitch = localStorage.getItem("autoSwitchTheme") === "true";
-const themeBtns = document.querySelectorAll(".theme-btn");
+            // Add visual feedback
+            refreshBtn.style.transform = "rotate(360deg)";
+            refreshBtn.style.transition = "transform 0.5s ease";
+            refreshBtn.textContent = "🔄 Refreshing...";
 
-function setTheme(theme) {
-    document.body.className = theme;
-    themeBtns.forEach((btn, i) => {
-        btn.classList.toggle("selected", btn.dataset.theme === theme);
-        if (btn.dataset.theme === theme) currentThemeIndex = i;
-    });
-    localStorage.setItem("movieTheme", theme);
-}
+            setTimeout(() => {
+                refreshBtn.style.transform = "rotate(0deg)";
+                refreshBtn.textContent = "🔄 Refresh";
+            }, 500);
 
-themeBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-        setTheme(btn.dataset.theme);
-        autoSwitch = false;
-        localStorage.setItem("autoSwitchTheme", "false");
-        themeToggle.textContent = "Enable Auto Theme";
-        clearInterval(themeInterval);
-    });
-});
+            // Re-render movies with shuffled order
+            renderMovies("All", "");
+        });
 
-let themeInterval;
-function startAutoTheme() {
-    if (autoSwitch) {
-        themeInterval = setInterval(() => {
-            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-            setTheme(themes[currentThemeIndex]);
-        }, 5000);
-    } else {
-        clearInterval(themeInterval);
-    }
-}
+        // Theme handling
+        const themes = ["theme-light", "theme-dark", "theme-neon", "theme-blue", "theme-rose", "theme-rgb-lightning"];
+        let currentThemeIndex = 0;
+        let autoSwitch = localStorage.getItem("autoSwitchTheme") === "true";
+        const themeBtns = document.querySelectorAll(".theme-btn");
 
-themeToggle?.addEventListener("click", () => {
-    autoSwitch = !autoSwitch;
-    localStorage.setItem("autoSwitchTheme", autoSwitch);
-    themeToggle.textContent = autoSwitch ? "Disable Auto Theme" : "Enable Auto Theme";
-    startAutoTheme();
-});
+        function setTheme(theme) {
+            document.body.className = theme;
+            themeBtns.forEach((btn, i) => {
+                btn.classList.toggle("selected", btn.dataset.theme === theme);
+                if (btn.dataset.theme === theme) currentThemeIndex = i;
+            });
+            localStorage.setItem("movieTheme", theme);
+        }
 
-// Initialize theme
-const savedTheme = localStorage.getItem("movieTheme");
-const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "theme-dark" : "theme-light";
-setTheme(savedTheme || systemTheme);
-if (autoSwitch) {
-    themeToggle.textContent = "Disable Auto Theme";
-    startAutoTheme();
-}
+        themeBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                setTheme(btn.dataset.theme);
+                autoSwitch = false;
+                localStorage.setItem("autoSwitchTheme", "false");
+                themeToggle.textContent = "Auto Theme";
+                clearInterval(themeInterval);
+            });
+        });
 
-// Scroll handling
-let lastScroll = 0;
-window.addEventListener("scroll", () => {
-    const currentScroll = window.scrollY;
-    if (categoryBar) {
-        categoryBar.classList.toggle("hidden", currentScroll > lastScroll && currentScroll > 100);
-    }
-    backToTop?.classList.toggle("visible", currentScroll > 300);
-    lastScroll = currentScroll;
-});
+        let themeInterval;
+        function startAutoTheme() {
+            if (autoSwitch) {
+                themeInterval = setInterval(() => {
+                    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+                    setTheme(themes[currentThemeIndex]);
+                }, 5000);
+            } else {
+                clearInterval(themeInterval);
+            }
+        }
 
-backToTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+        themeToggle?.addEventListener("click", () => {
+            autoSwitch = !autoSwitch;
+            localStorage.setItem("autoSwitchTheme", autoSwitch);
+            themeToggle.textContent = autoSwitch ? "Stop Auto" : "Auto Theme";
+            startAutoTheme();
+        });
 
-modalClose?.addEventListener("click", () => {
-    imageModal.style.display = "none";
-});
+        // Initialize theme
+        const savedTheme = localStorage.getItem("movieTheme");
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "theme-dark" : "theme-light";
+        setTheme(savedTheme || systemTheme);
+        if (autoSwitch) {
+            themeToggle.textContent = "Stop Auto";
+            startAutoTheme();
+        }
 
-imageModal?.addEventListener("click", e => {
-    if (e.target === imageModal) imageModal.style.display = "none";
-});
+        // Scroll handling - menu bar scrolls with page (not fixed)
+        window.addEventListener("scroll", () => {
+            const currentScroll = window.scrollY;
+            backToTop?.classList.toggle("visible", currentScroll > 300);
+        });
 
-// Initial render
-renderMovies();
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
-    if (!localStorage.getItem("movieTheme") && !autoSwitch) {
-        setTheme(e.matches ? "theme-dark" : "theme-light");
-    }
-});
-</script>
+        backToTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+        modalClose?.addEventListener("click", () => {
+            imageModal.style.display = "none";
+        });
+
+        imageModal?.addEventListener("click", e => {
+            if (e.target === imageModal) imageModal.style.display = "none";
+        });
+
+        // Initial render
+        renderMovies();
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+            if (!localStorage.getItem("movieTheme") && !autoSwitch) {
+                setTheme(e.matches ? "theme-dark" : "theme-light");
+            }
+        });
+    </script>
 </body>
 </html>
