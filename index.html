@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,6 +37,11 @@
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+        }
+        @media (max-width: 768px) {
+            .header {
+                background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('https://images.unsplash.com/photo-1598899134739-9b5859230d8c?auto=format&fit=crop&w=600');
+            }
         }
         .logo {
             font-weight: bold;
@@ -120,11 +124,14 @@
             cursor: pointer;
             font-size: 0.9em;
             margin-left: 8px;
-            transition: background 0.2s, transform 0.2s;
+            transition: background 0.2s, transform 0.5s;
         }
         .refresh-btn:hover {
             background: #c50811;
             transform: translateY(-2px);
+        }
+        .refresh-btn.spinning {
+            transform: rotate(360deg);
         }
         .sort-select {
             padding: 6px 12px;
@@ -175,7 +182,7 @@
         .content-wrapper {
             margin-top: 20px;
         }
-        .movies-container {
+        .movies-collapse {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
@@ -217,7 +224,7 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            background: url('https://via.placeholder.com/150x84?text=Loading') center/cover;
+            background: url('https://via.placeholder.com/300x168?text=Loading') center/cover;
             cursor: pointer;
         }
         .movie-poster img.error {
@@ -266,16 +273,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 16px;
+            gap: 8px;
             margin: 30px 0 20px 0;
+            flex-wrap: wrap;
         }
         .pagination button {
-            padding: 8px 18px;
+            padding: 8px 14px;
             border-radius: 20px;
             border: none;
             background: linear-gradient(45deg, var(--accent), #ff6b6b);
             color: #fff;
-            font-size: 1em;
+            font-size: 0.9em;
             cursor: pointer;
             font-weight: 500;
             transition: background 0.2s, transform 0.2s;
@@ -287,9 +295,26 @@
             background: #ccc;
             cursor: not-allowed;
         }
+        .pagination input {
+            width: 50px;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 0.9em;
+        }
         .pagination span {
-            font-size: 1.1em;
+            font-size: 1em;
             color: var(--text);
+        }
+        .pagination .page-btn {
+            background: none;
+            border: 1px solid var(--accent);
+            color: var(--text);
+        }
+        .pagination .page-btn.active {
+            background: var(--accent);
+            color: #fff;
         }
         .loading {
             text-align: center;
@@ -331,13 +356,14 @@
             opacity: 0;
             transition: opacity 0.3s, transform 0.3s;
             z-index: 1002;
+            transform: scale(0.8);
         }
         .back-to-top.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: scale(1);
         }
         .back-to-top:hover {
-            transform: translateY(-5px);
+            transform: scale(1.1);
         }
         .image-modal {
             display: none;
@@ -407,7 +433,21 @@
             0% { transform: scale(1); } 
             100% { transform: scale(1.5) rotate(20deg); color: red; } 
         }
-        
+        .bomb-emoji {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .bomb-emoji:hover {
+            transform: scale(1.2);
+        }
+        .disclaimer {
+            font-size: 0.85em;
+            color: #666;
+            margin: 10px auto;
+            text-align: center;
+            max-width: 600px;
+        }
+
         /* Mobile optimizations - always 2 columns */
         @media (max-width: 768px) {
             .header {
@@ -463,7 +503,7 @@
                 padding: 4px 6px;
             }
         }
-        
+
         @media (max-width: 480px) {
             .header {
                 padding: 6px 8px;
@@ -482,7 +522,7 @@
                 font-size: 2em;
             }
         }
-        
+
         /* Themes */
         .theme-light {
             --bg: #fff;
@@ -542,6 +582,12 @@
                 --card-shadow: rgba(0, 0, 0, 0.3);
             }
         }
+        @media (prefers-reduced-motion: reduce) {
+            .theme-rgb-lightning, .refresh-btn, .back-to-top, .movie-card, .logo, .pulse, .bomb-emoji {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -568,17 +614,21 @@
         <select id="sortSelect" aria-label="Sort movies">
             <option value="title">Sort by Title</option>
             <option value="category">Sort by Category</option>
+            <option value="original">Sort by Original Order</option>
         </select>
         <button class="refresh-btn" id="refreshBtn">🔄 Refresh</button>
     </header>
 
-    <nav class="category-bar" id="categoryBar" role="navigation"></nav>
+    <nav class="category-bar" id="categoryBar" role="navigation" aria-label="Category filter"></nav>
 
     <div class="content-wrapper">
-        <main class="movies-container" id="moviesContainer"></main>
-        <div class="pagination" id="paginationBar" role="navigation"></div>
+        <main class="movies-container" id="moviesContainer" aria-live="polite"></main>
+        <div class="pagination" id="paginationBar" role="navigation" aria-label="Pagination"></div>
         <div class="loading" id="loading" style="display: none;">Loading...</div>
 
+        <div class="disclaimer">
+            <strong>Disclaimer:</strong> Download links are provided by third-party sites. Use at your own risk and ensure your internet connection is secure.
+        </div>
         <div style="background: #fff8dc; border-left: 5px solid gold; padding: 12px 16px; border-radius: 6px; font-family: sans-serif; color: #333; max-width: 400px; margin: 20px auto;">
             <strong style="color: goldenrod;">💡 Instructions:</strong>
             <p style="margin: 8px 0 0 0; font-size: 0.95em;">
@@ -588,16 +638,41 @@
 
         <div class="marquee" aria-hidden="true">00101010101001100101101110101001010110101010100101010101001010111001010101010010101010101010101010101011101000101011110101001011</div>
 
-        <span style="animation: explode 0.3s ease-in-out infinite alternate; font-size: 1.5em;">💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣💣</span>
+        <span class="bomb-emojis" role="button" tabindex="0" aria-label="Explosive emojis">
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 0.1s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 0.2s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 0.3s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 0.4s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 0.5s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 0.6s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 0.7s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 0.8s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 0.9s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 1s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 1.1s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 1.2s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 1.3s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 1.4s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 1.5s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 1.6s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 1.7s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 1.8s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 1.9s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 2s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 2.1s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 2.2s;">💣</span>
+            <span class="bomb-emoji" style="animation: explode 0.3s ease-in-out infinite alternate 2.3s;">💣</span>
+        </span>
 
-        <div class="stitched">mobile view is optimized for 2 columns</div>
+        <div class="stitched" role="button" tabindex="0" aria-label="Stitched text">mobile view is optimized for 2 columns</div>
         <div class="pulse"></div>
     </div>
 
     <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
     <div class="image-modal" id="imageModal">
-        <span class="image-modal-close" id="imageModalClose">×</span>
+        <span class="image-modal-close" id="imageModalClose" role="button" tabindex="0" aria-label="Close image modal">×</span>
         <img id="modalImage" src="" alt="Full movie poster" />
     </div>
 
@@ -605,7 +680,7 @@
 
     <script>
         // Simulated movies.json data
-        const movies = [
+        const originalMovies = [
             {
                 title: "Interstellar",
                 category: "Sci-Fi",
@@ -657,8 +732,8 @@
             {
                 title: "Puss in boots",
                 category: "Animation",
-                img: "https://joshmovies.com/wp-content/uploads/2025/06/puss-in-boots-2011-dual-audio-hindi-english-480p-720p-1080p-1-740x1110.jpg",
-                year: 6666,
+                img: "https://joshmovies.com/wp-content/uploads/2025/06/puss-in-boots-2011-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
+                year: 2011,
                 synopsis: "This is the true story of The Cat, The Myth, The Legend… The Boots.",
                 seasons: [{ label: "Download 720p", url: "https://mvlink.site/13720" }],
             },
@@ -667,7 +742,7 @@
                 category: "Drama",
                 img: "https://joshmovies.com/wp-content/uploads/2025/06/the-pursuit-of-happyness-2006-dual-audio-english-hindi-480p-720p-1080p-740x1110.jpg",
                 year: 2006,
-                synopsis: ".",
+                synopsis: ".", // Updated in renderMovies to use fallback
                 seasons: [{ label: "Download 720p", url: "https://mvlink.site/13994" }],
             },
             {
@@ -699,7 +774,7 @@
                 category: "Crime",
                 img: "https://joshmovies.com/wp-content/uploads/2025/07/patriots-day-2016-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
                 year: 2016,
-                synopsis: "--",
+                synopsis: "--", // Updated in renderMovies to use fallback
                 seasons: [{ label: "Download 720p", url: "https://mvlink.site/10598" }],
             },
             {
@@ -755,7 +830,7 @@
                 category: "Action",
                 img: "https://joshmovies.com/wp-content/uploads/2025/06/f9-the-fast-saga-2021-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
                 year: 2021,
-                synopsis: "",
+                synopsis: "", // Updated in renderMovies to use fallback
                 seasons: [{ label: "Download 720p", url: "https://mvlink.site/13617" }],
             },
             {
@@ -835,7 +910,7 @@
                 category: "Action",
                 img: "https://joshmovies.com/wp-content/uploads/2025/06/jurassic-predator-2018-dual-audio-hindi-english-480p-720p-1080p-740x1110.jpg",
                 year: 2018,
-                synopsis: ".",
+                synopsis: ".", // Updated in renderMovies to use fallback
                 seasons: [{ label: "Download 720p", url: "https://mvlink.site/11821" }],
             },
             {
@@ -936,12 +1011,15 @@
             }
         ];
 
+        // Create a working copy of movies
+        let movies = [...originalMovies];
+
         // Pagination settings
         const MOVIES_PER_PAGE = 10;
         let currentPage = 1;
 
         // Generate unique categories
-        const categories = ["All", ...Array.from(new Set(movies.map(m => m.category)))];
+        const categories = ["All", ...Array.from(new Set(originalMovies.map(m => m.category)))];
 
         // Elements
         const categoryBar = document.getElementById("categoryBar");
@@ -989,9 +1067,21 @@
 
         // Render movies with pagination, category, and search
         function renderMovies(filterCat = "All", searchTerm = "") {
-            if (!moviesContainer || !paginationBar || !loading) return;
+            if (!moviesContainer || !paginationBar || !loading) {
+                console.error("Required DOM elements are missing.");
+                moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;" role="alert">Error: Page elements are missing.</div>`;
+                return;
+            }
+            if (!movies || !Array.isArray(movies)) {
+                console.error("Movies data is invalid.");
+                moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;" role="alert">No movies available.</div>`;
+                loading.style.display = "none";
+                return;
+            }
+
             loading.style.display = "block";
             moviesContainer.innerHTML = "";
+            moviesContainer.setAttribute("aria-busy", "true");
 
             // Show skeleton loaders
             for (let i = 0; i < MOVIES_PER_PAGE; i++) {
@@ -1001,7 +1091,7 @@
                     <div class="movie-poster" style="background: #eee;"></div>
                     <div class="movie-description">
                         <div style="background: #eee; height: 20px; margin-bottom: 8px;"></div>
-                    <div style="background: #eee; height: 40px;"></div>
+                        <div style="background: #eee; height: 40px;"></div>
                     </div>
                 `;
                 moviesContainer.appendChild(skeleton);
@@ -1017,6 +1107,11 @@
 
                     const sorted = [...filtered].sort((a, b) => {
                         const sortBy = sortSelect?.value || "title";
+                        if (sortBy === "original") {
+                            const indexA = originalMovies.findIndex(m => m.title === a.title);
+                            const indexB = originalMovies.findIndex(m => m.title === b.title);
+                            return indexA - indexB;
+                        }
                         return a[sortBy].localeCompare(b[sortBy]);
                     });
 
@@ -1029,20 +1124,28 @@
 
                     moviesContainer.innerHTML = "";
                     if (paginated.length === 0) {
-                        moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;">No movies found.</div>`;
+                        moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;" role="alert">No movies found.</div>`;
                     } else {
                         paginated.forEach(movie => {
                             const card = document.createElement("div");
                             card.className = "movie-card";
                             card.setAttribute("aria-label", `Movie: ${movie.title}, ${movie.category}, ${movie.year}`);
+                            const displaySynopsis = movie.synopsis && ![".", "--", ""].includes(movie.synopsis.trim())
+                                ? movie.synopsis
+                                : "No synopsis available.";
                             card.innerHTML = `
                                 <div class="movie-poster">
-                                    <img src="${movie.img}" alt="${movie.title} poster" onerror="this.src='https://via.placeholder.com/150x84?text=Image+Not+Found';this.classList.add('error');" loading="lazy" decoding="async">
+                                    <img src="${movie.img}" 
+                                         srcset="${movie.img} 300w, ${movie.img} 150w"
+                                         sizes="(max-width: 768px) 150px, 300px"
+                                         alt="${movie.title} poster" 
+                                         onerror="this.src='https://via.placeholder.com/300x168?text=Image+Not+Found';this.classList.add('error');" 
+                                         loading="lazy" decoding="async">
                                 </div>
                                 <div class="movie-description">
                                     <strong>${movie.title} (${movie.year})</strong>
                                     <p><strong>Category:</strong> ${movie.category}</p>
-                                    <p>${movie.synopsis || "No synopsis available."}</p>
+                                    <p>${displaySynopsis}</p>
                                     ${movie.seasons.map(s => `<a href="${s.url}" class="season-link" target="_blank" rel="noopener noreferrer">${s.label}</a>`).join("")}
                                 </div>
                             `;
@@ -1052,13 +1155,16 @@
                                 modalImage.src = movie.img;
                                 modalImage.alt = `${movie.title} full poster`;
                                 imageModal.style.display = "flex";
+                                modalClose.focus();
                             });
                         });
                     }
 
+                    // Generate pagination with page numbers
                     paginationBar.innerHTML = `
                         <button id="prevBtn" ${currentPage === 1 ? "disabled aria-disabled='true'" : ""} aria-label="Previous page">Previous</button>
-                        <span>Page ${currentPage} of ${pageCount || 1}</span>
+                        <span>Page <input type="number" id="pageInput" min="1" max="${pageCount || 1}" value="${currentPage}" aria-label="Current page"> of ${pageCount || 1}</span>
+                        ${generatePageButtons(pageCount)}
                         <button id="nextBtn" ${currentPage === pageCount ? "disabled aria-disabled='true'" : ""} aria-label="Next page">Next</button>
                     `;
 
@@ -1074,14 +1180,49 @@
                             renderMovies(filterCat, searchTerm);
                         }
                     });
+                    document.getElementById("pageInput")?.addEventListener("change", (e) => {
+                        const page = parseInt(e.target.value);
+                        if (page >= 1 && page <= pageCount) {
+                            currentPage = page;
+                            renderMovies(filterCat, searchTerm);
+                        } else {
+                            e.target.value = currentPage;
+                        }
+                    });
+                    document.querySelectorAll(".page-btn").forEach(btn => {
+                        btn.addEventListener("click", () => {
+                            currentPage = parseInt(btn.dataset.page);
+                            renderMovies(filterCat, searchTerm);
+                        });
+                    });
 
+                    moviesContainer.setAttribute("aria-busy", "false");
                     loading.style.display = "none";
                 } catch (error) {
                     console.error("Error rendering movies:", error);
-                    moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;">Error loading movies.</div>`;
+                    moviesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#999;" role="alert">Error loading movies.</div>`;
+                    moviesContainer.setAttribute("aria-busy", "false");
                     loading.style.display = "none";
                 }
             }, 300);
+        }
+
+        // Generate page number buttons
+        function generatePageButtons(pageCount) {
+            let buttons = "";
+            const maxButtons = 5;
+            let start = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+            let end = Math.min(pageCount, start + maxButtons - 1);
+            if (end - start < maxButtons - 1) {
+                start = Math.max(1, end - maxButtons + 1);
+            }
+            for (let i = start; i <= end; i++) {
+                buttons += `<button class="page-btn${i === currentPage ? " active" : ""}" data-page="${i}" aria-label="Page ${i}">${i}</button>`;
+            }
+            if (end < pageCount) {
+                buttons += `<span>...</span><button class="page-btn" data-page="${pageCount}" aria-label="Page ${pageCount}">${pageCount}</button>`;
+            }
+            return buttons;
         }
 
         // Debounced search
@@ -1106,13 +1247,10 @@
             );
         });
 
-        // Refresh button functionality - shuffles movies and resets everything
+        // Refresh button functionality
         refreshBtn?.addEventListener("click", () => {
-            // Shuffle movies array
-            for (let i = movies.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [movies[i], movies[j]] = [movies[j], movies[i]];
-            }
+            // Shuffle a copy of the movies array
+            movies = [...originalMovies].sort(() => Math.random() - 0.5);
 
             // Reset to default state
             currentPage = 1;
@@ -1125,17 +1263,22 @@
                 }
             });
 
-            // Add visual feedback
-            refreshBtn.style.transform = "rotate(360deg)";
-            refreshBtn.style.transition = "transform 0.5s ease";
-            refreshBtn.textContent = "🔄 Refreshing...";
+            // Add spinning animation
+            let rotation = 0;
+            refreshBtn.classList.add("spinning");
+            function rotate() {
+                rotation += 10;
+                refreshBtn.style.transform = `rotate(${rotation}deg)`;
+                if (rotation < 360) {
+                    requestAnimationFrame(rotate);
+                } else {
+                    refreshBtn.classList.remove("spinning");
+                    refreshBtn.style.transform = "rotate(0deg)";
+                }
+            }
+            requestAnimationFrame(rotate);
 
-            setTimeout(() => {
-                refreshBtn.style.transform = "rotate(0deg)";
-                refreshBtn.textContent = "🔄 Refresh";
-            }, 500);
-
-            // Re-render movies with shuffled order
+            // Re-render movies
             renderMovies("All", "");
         });
 
@@ -1166,7 +1309,7 @@
 
         let themeInterval;
         function startAutoTheme() {
-            if (autoSwitch) {
+            if (autoSwitch && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
                 themeInterval = setInterval(() => {
                     currentThemeIndex = (currentThemeIndex + 1) % themes.length;
                     setTheme(themes[currentThemeIndex]);
@@ -1192,20 +1335,55 @@
             startAutoTheme();
         }
 
-        // Scroll handling - menu bar scrolls with page (not fixed)
+        // Scroll handling
         window.addEventListener("scroll", () => {
             const currentScroll = window.scrollY;
             backToTop?.classList.toggle("visible", currentScroll > 300);
         });
 
         backToTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+        backToTop?.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === "Space") {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        });
 
         modalClose?.addEventListener("click", () => {
             imageModal.style.display = "none";
         });
+        modalClose?.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === "Space") {
+                imageModal.style.display = "none";
+            }
+        });
 
         imageModal?.addEventListener("click", e => {
             if (e.target === imageModal) imageModal.style.display = "none";
+        });
+
+        // Add interactivity to bomb emojis
+        document.querySelectorAll(".bomb-emoji").forEach(emoji => {
+            emoji.addEventListener("click", () => {
+                emoji.style.transform = "scale(1.5)";
+                setTimeout(() => emoji.style.transform = "scale(1)", 200);
+            });
+            emoji.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === "Space") {
+                    emoji.style.transform = "scale(1.5)";
+                    setTimeout(() => emoji.style.transform = "scale(1)", 200);
+                }
+            });
+        });
+
+        // Add interactivity to stitched text
+        const stitched = document.querySelector(".stitched");
+        stitched?.addEventListener("click", () => {
+            stitched.style.background = stitched.style.background === "yellow" ? "#f9f9f9" : "yellow";
+        });
+        stitched?.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === "Space") {
+                stitched.style.background = stitched.style.background === "yellow" ? "#f9f9f9" : "yellow";
+            }
         });
 
         // Initial render
